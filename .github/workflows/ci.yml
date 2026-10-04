@@ -49,6 +49,24 @@ jobs:
       - name: Every script answers --help
         run: for s in plugins/aws-security/skills/*/scripts/[a-z]*.py; do python3 "$s" --help > /dev/null; done
 
+  container-build:
+    name: Build the container image and run it
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Build the image, print --help, run each subcommand's --help and check the user
+        run: |
+          docker build --build-arg VERSION=ci -t aws-security-skills:ci .
+          docker run --rm aws-security-skills:ci --help > help.txt && grep "^usage: aws-security <subcommand>" help.txt
+          docker run --rm aws-security-skills:ci > /dev/null && grep -c "^  [a-z]" help.txt
+          for s in audit scp-build scp-lint blast-radius iam-review triage; do docker run --rm aws-security-skills:ci "$s" --help > /dev/null; done
+          docker run --rm aws-security-skills:ci --version
+          test "$(docker run --rm --entrypoint id aws-security-skills:ci -u)" = "1000"
+          test "$(docker run --rm --entrypoint pwd aws-security-skills:ci)" = "/work"
+
   claude-plugin-validate:
     name: claude plugin validate --strict
     runs-on: ubuntu-latest

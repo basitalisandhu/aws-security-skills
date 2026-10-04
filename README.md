@@ -35,6 +35,37 @@ python3 plugins/aws-security/skills/scp-guardrails/scripts/scp_builder.py plugin
 
 Requirements: Python 3.11 or newer as `python3`. AWS CLI v2 and read-only credentials (the `SecurityAudit` or `ReadOnlyAccess` managed policy) for the collection steps only.
 
+## Install
+
+The plugin installs as shown in the Quickstart. The skill scripts are also published as one container image on GitHub Packages (linux/amd64 and linux/arm64) for running them without a checkout, for example in CI. The image's entrypoint is `aws-security <subcommand> [args]`; mount the files to read at `/work`, which is the working directory:
+
+```bash
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.1.1 audit /work/exports
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.1.1 iam-review /work/policy.json
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.1.1 scp-build /work/scp-spec.yaml --out /work/scps
+docker run --rm ghcr.io/basitalisandhu/aws-security-skills:0.1.1 --help
+```
+
+| Subcommand | Script (skill) |
+|---|---|
+| `audit` | `audit_account.py` (aws-account-audit) |
+| `scp-build` | `scp_builder.py` (scp-guardrails) |
+| `scp-lint` | `scp_lint.py` (scp-guardrails) |
+| `blast-radius` | `blast_radius.py` (landing-zone-blast-radius) |
+| `iam-review` | `iam_review.py` (iam-least-privilege-review) |
+| `triage` | `triage_findings.py` (security-hub-triage) |
+
+Every subcommand passes its arguments to the script unchanged, so `aws-security <subcommand> --help` shows the same options as the script. Output files land in the mounted folder. The image has no pip dependencies and runs as uid 1000; on Linux add `--user "$(id -u):$(id -g)"` if the mounted folder is not writable by that uid. From a checkout, `python3 scripts/cli.py` is the same dispatcher.
+
+Each image is signed with cosign (keyless) and has a build provenance attestation and an SPDX SBOM (attached to the GitHub Release). To verify:
+
+```bash
+cosign verify ghcr.io/basitalisandhu/aws-security-skills:0.1.1 \
+  --certificate-identity-regexp '^https://github.com/basitalisandhu/aws-security-skills/' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com
+gh attestation verify oci://ghcr.io/basitalisandhu/aws-security-skills:0.1.1 --owner basitalisandhu
+```
+
 ## When to use this
 
 - Is this AWS account set up safely, and what should we fix first: `aws-account-audit`
