@@ -1,7 +1,7 @@
 {
   "name": "aws-security",
   "displayName": "AWS Security",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "AWS security skills for Claude Code: read-only account audit, SCP guardrail builder and linter, landing zone blast-radius design, IAM least-privilege review and Security Hub and GuardDuty triage. Scripts are standard-library Python and evaluate saved aws CLI output offline.",
   "author": {
     "name": "Muhammad Basit Ali",
