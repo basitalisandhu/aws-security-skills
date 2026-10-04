@@ -55,6 +55,8 @@ docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.2.0
 docker run --rm ghcr.io/basitalisandhu/aws-security-skills:0.2.0 --help
 ```
 
+This pack is also part of [claude-skills](https://github.com/basitalisandhu/claude-skills), which holds every skill I maintain as one marketplace: `/plugin marketplace add basitalisandhu/claude-skills`.
+
 | Subcommand | Script (skill) |
 |---|---|
 | `audit` | `audit_account.py` (aws-account-audit) |
@@ -157,6 +159,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for the ground rules and [docs/good-first
 | [claude-dev-skills](https://github.com/basitalisandhu/claude-dev-skills) | Claude Code skills for everyday development: code review, debugging, CI and containers, data, docs and security basics |
 | [agent-security-skills](https://github.com/basitalisandhu/agent-security-skills) | Claude Code plugin for securing LLM agents: threat modelling, config audits, prompt injection review, MCP server review |
 | [basitalisandhu](https://github.com/basitalisandhu) | The maintainer's profile and other projects |
+| [This pack is also part of claude-skills](https://github.com/basitalisandhu/claude-skills) | All packs in one repository; this plugin's pages are at https://basitalisandhu.github.io/claude-skills/plugins/aws-security/ |
 
 ## Licence
 
