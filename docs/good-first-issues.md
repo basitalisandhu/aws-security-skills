@@ -54,3 +54,63 @@ To claim one, open an issue with the title below (or comment on the existing one
 **Acceptance criteria.**
 - Owner rule key `tag: {key: team, value: payments}` (exact match) in the config.
 - A fixture finding with tags and a test; the config example and `SKILL.md` document the key.
+
+## 6. agent-safe-aws-access: inventory allowlist for Step Functions
+
+**Labels:** good first issue, agent-safe-aws-access, python
+
+**Context.** `INVENTORY_ACTIONS` in `agent_access.py` has no entry for `states`, so a read-only inventory task cannot list state machines.
+
+**Acceptance criteria.**
+- A `states` entry with metadata-only actions (`states:ListStateMachines`, `states:DescribeStateMachine`, `states:ListExecutions`), and no action that returns execution input or output.
+- A test that plans an inventory task for `states` and checks the statement and its region condition; the SKILL.md limits line still holds.
+
+## 7. agent-safe-aws-access: report an engaged kill switch
+
+**Labels:** good first issue, agent-safe-aws-access, python
+
+**Context.** After the kill switch runs, the agent role carries an inline policy named `AWSRevokeOlderSessions` that denies everything for sessions issued before a time. `review` treats it as an ordinary inline policy and says nothing about it.
+
+**Acceptance criteria.**
+- New info finding `AGENT-KILL-SWITCH-ACTIVE` naming the `aws:TokenIssueTime` value when that inline policy is present.
+- A fixture role with the policy and a test; the docstring check list and `SKILL.md` mention the finding.
+
+## 8. aws-incident-response-runbook: map RDS login findings
+
+**Labels:** good first issue, aws-incident-response-runbook, python
+
+**Context.** GuardDuty RDS Protection finding types (`CredentialAccess:RDS/*`) are reported as unmapped by `ir_runbook.py triage`.
+
+**Acceptance criteria.**
+- Map them to `suspicious-iam-activity` or a new scenario, with a line in `references/guardduty-mapping.md` explaining why.
+- A parametrized case in `tests/test_ir_runbook.py`.
+
+## 9. aws-incident-response-runbook: checklist items in the JSON output
+
+**Labels:** good first issue, aws-incident-response-runbook, python
+
+**Context.** Teams track the post-incident checklist in a ticketing tool and copy it by hand from the Markdown.
+
+**Acceptance criteria.**
+- `--json` output gains a `checklist` list with one string per item.
+- A test that the list matches the Markdown checklist items.
+
+## 10. aws-spend-guardrails: group the review by region
+
+**Labels:** good first issue, aws-spend-guardrails, python
+
+**Context.** `review` reads `SERVICE` and `LINKED_ACCOUNT` groups. Crypto-mining spikes often show first in an unused region, which a `REGION` group would reveal.
+
+**Acceptance criteria.**
+- `REGION` is read when it is one of the two group-by dimensions, and the text and JSON output gain a by-region total.
+- A small fixture grouped by `SERVICE` and `REGION`, and a test.
+
+## 11. sandbox-account-guardrail-pack: per-account README values
+
+**Labels:** good first issue, sandbox-account-guardrail-pack, python
+
+**Context.** `README-sandbox-users.md` names the OU-wide budget only. Some teams give each sandbox account its own budget amount.
+
+**Acceptance criteria.**
+- Optional spec key `accounts: [{id, name, monthly_limit}]`; when set, the README lists each account with its limit.
+- A test with two accounts; the spec docstring and `references/example-spec.yaml` document the key.

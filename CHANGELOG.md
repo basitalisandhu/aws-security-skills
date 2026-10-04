@@ -4,6 +4,24 @@ All notable changes to this project are documented here. The format follows Keep
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-05
+
+Four new skills, each with a standard-library script, hand-written fixtures with planted problems, and offline tests. The container image gains four subcommands.
+
+### Added
+
+- `agent-safe-aws-access`: `agent_access.py plan` turns a spec (agent, operators, accounts, regions, session length, tasks) into an IAM Identity Center or role-pattern trust policy that requires `agent` and `operator` session tags, a source identity and a `<agent>@<operator>` session name; a permission policy from a vetted allowlist per task type (read-only inventory, deploy one stack, invoke one Lambda function, read one log prefix, read one S3 prefix); a permissions boundary that denies IAM, Organizations and account changes, CloudTrail, GuardDuty, Security Hub and Config tampering, billing and purchase commitments, destructive deletes and role chaining; a sandbox OU SCP backstop; the `aws sts assume-role` commands; and a kill switch (`AWSRevokeOlderSessions` deny on `aws:TokenIssueTime`, locked trust policy, CloudTrail query). `agent_access.py review` checks an exported role against the same rules with 18 check ids.
+- `aws-incident-response-runbook`: `ir_runbook.py` writes a Markdown runbook for six scenarios (leaked access key, compromised EC2 instance, public S3 bucket, suspicious IAM activity, ransomware against S3 or EBS, crypto-mining) with read-only inventory first, containment commands marked as requiring confirmation, evidence preservation (snapshots, `lookup-events`, Athena), eradication, recovery, a post-incident checklist and timeline and communications templates. `ir_runbook.py triage` maps exported GuardDuty finding types to a scenario and fills in identifiers that match their format.
+- `aws-spend-guardrails`: `spend_guardrails.py` generates AWS Budgets JSON (cost and usage budgets with actual and forecast alerts), a Cost Anomaly Detection monitor and subscription, and sandbox spend-deny SCPs (instance types, EBS IOPS and volume types, SageMaker GPU instances, Bedrock customization and provisioned throughput, chosen services, purchase commitments, protection of budgets and anomaly monitors). `spend_guardrails.py review` summarises a daily Cost Explorer export by service, account and month against the budget and flags days above a factor of the prior 7-day median.
+- `sandbox-account-guardrail-pack`: `sandbox_pack.py` emits SCPs built by importing `scp_builder.py` and `spend_guardrails.py` (plus IAM user creation and owner-tag denies), packed under 5120 characters and linted with `scp_lint.py`; an account baseline checklist; a tag-based auto-expiry design with the EventBridge Scheduler command, a Lambda sweeper in Python pseudocode (dry run by default) and its role policies; budget files; and a README for sandbox users.
+- Dispatcher subcommands `agent-access`, `ir-runbook`, `spend` and `sandbox`, with tests.
+- Six good first issues for the new skills.
+
+### Changed
+
+- Version 0.2.0 in `pyproject.toml`, `plugin.json`, `marketplace.json` and the dispatcher; README skill tables, coverage lists and container examples updated.
+- CI runs `--help` for the new subcommands in the container job.
+
 ## [0.1.1] - 2026-10-04
 
 The skill scripts are published as a container image on GitHub Packages, using only the workflow's `GITHUB_TOKEN`: `ghcr.io/basitalisandhu/aws-security-skills`, tagged `0.1.1` and `latest`, for linux/amd64 and linux/arm64, with an SPDX SBOM, a build provenance attestation and a keyless cosign signature. The skills themselves are unchanged.
