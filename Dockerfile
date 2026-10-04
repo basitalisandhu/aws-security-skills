@@ -25,7 +25,7 @@ RUN set -e; for d in /tmp/skills/*/scripts; do \
 FROM ${PYTHON_IMAGE}
 ARG VERSION=0.0.0-dev
 LABEL org.opencontainers.image.title="aws-security-skills" \
-      org.opencontainers.image.description="AWS security skill scripts (account audit, SCP guardrails, landing zone blast radius, IAM review, Security Hub triage) behind one command" \
+      org.opencontainers.image.description="AWS security skill scripts (account audit, SCP guardrails, landing zone blast radius, IAM review, Security Hub triage, agent access, incident runbooks, spend and sandbox guardrails) behind one command" \
       org.opencontainers.image.source="https://github.com/basitalisandhu/aws-security-skills" \
       org.opencontainers.image.url="https://github.com/basitalisandhu/aws-security-skills" \
       org.opencontainers.image.licenses="MIT" \

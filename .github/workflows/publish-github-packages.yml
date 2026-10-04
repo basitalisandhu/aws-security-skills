@@ -123,13 +123,13 @@ jobs:
             ${{ env.IMAGE }}:latest
           labels: |
             org.opencontainers.image.title=aws-security-skills
-            org.opencontainers.image.description=AWS security skill scripts (account audit, SCP guardrails, landing zone blast radius, IAM review, Security Hub triage) behind one command
+            org.opencontainers.image.description=AWS security skill scripts (account audit, SCP guardrails, landing zone blast radius, IAM review, Security Hub triage, agent access, incident runbooks, spend and sandbox guardrails) behind one command
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.licenses=MIT
             org.opencontainers.image.version=${{ env.VERSION }}
             org.opencontainers.image.revision=${{ github.sha }}
           annotations: |
-            index:org.opencontainers.image.description=AWS security skill scripts (account audit, SCP guardrails, landing zone blast radius, IAM review, Security Hub triage) behind one command
+            index:org.opencontainers.image.description=AWS security skill scripts (account audit, SCP guardrails, landing zone blast radius, IAM review, Security Hub triage, agent access, incident runbooks, spend and sandbox guardrails) behind one command
             index:org.opencontainers.image.source=https://github.com/${{ github.repository }}
             index:org.opencontainers.image.licenses=MIT
           # Provenance comes from attest-build-provenance below; keep the image index free of extra manifests.

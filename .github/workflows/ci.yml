@@ -62,7 +62,7 @@ jobs:
           docker build --build-arg VERSION=ci -t aws-security-skills:ci .
           docker run --rm aws-security-skills:ci --help > help.txt && grep "^usage: aws-security <subcommand>" help.txt
           docker run --rm aws-security-skills:ci > /dev/null && grep -c "^  [a-z]" help.txt
-          for s in audit scp-build scp-lint blast-radius iam-review triage; do docker run --rm aws-security-skills:ci "$s" --help > /dev/null; done
+          for s in audit scp-build scp-lint blast-radius iam-review triage agent-access ir-runbook spend sandbox; do docker run --rm aws-security-skills:ci "$s" --help > /dev/null; done
           docker run --rm aws-security-skills:ci --version
           test "$(docker run --rm --entrypoint id aws-security-skills:ci -u)" = "1000"
           test "$(docker run --rm --entrypoint pwd aws-security-skills:ci)" = "/work"

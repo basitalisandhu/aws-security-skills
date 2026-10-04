@@ -1,0 +1,10 @@
+{
+  "Role": {
+    "Path": "/",
+    "RoleName": "agent-claude-code",
+    "RoleId": "AROAEXAMPLEAGENT00001",
+    "Arn": "arn:aws:iam::123456789012:role/agent-claude-code",
+    "CreateDate": "2026-09-01T00:00:00Z",
+    "MaxSessionDuration": 43200
+  }
+}

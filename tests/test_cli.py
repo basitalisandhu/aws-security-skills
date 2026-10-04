@@ -56,6 +56,18 @@ def test_help_subcommand_shows_the_script_help():
     assert "audit_account.py" in result.stdout
 
 
+def test_0_2_subcommands_run_their_scripts():
+    fixtures = ROOT / "tests" / "fixtures"
+    result = run("ir-runbook", "--list")
+    assert result.returncode == 0 and "leaked-access-key" in result.stdout.split()
+    result = run("agent-access", "plan", "--spec", str(fixtures / "agent-access" / "agent-spec.yaml"))
+    assert result.returncode == 0 and "claude-code@<operator>" in result.stdout
+    result = run("spend", "review", "--cost-explorer", str(fixtures / "spend" / "cost-explorer-daily.json"), "--fail-on", "high")
+    assert result.returncode == 1 and "SPEND-ANOMALY" in result.stdout
+    result = run("sandbox", "--spec", str(fixtures / "sandbox" / "sandbox.yaml"))
+    assert result.returncode == 0 and "scp-01.json" in result.stdout
+
+
 def test_unknown_subcommand_and_no_arguments_exit_2():
     result = run("no-such-command")
     assert result.returncode == 2

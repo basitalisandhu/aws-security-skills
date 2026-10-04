@@ -15,7 +15,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 
 PROG = "aws-security"
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +29,10 @@ COMMANDS: dict[str, tuple[str, str, str]] = {
     "blast-radius": ("landing-zone-blast-radius", "blast_radius.py", "Organizations layout and blast-radius table from a spec"),
     "iam-review": ("iam-least-privilege-review", "iam_review.py", "Least-privilege review of IAM policy documents"),
     "triage": ("security-hub-triage", "triage_findings.py", "Group and order Security Hub (ASFF) and GuardDuty findings"),
+    "agent-access": ("agent-safe-aws-access", "agent_access.py", "Plan or review least-privilege AWS access for an AI agent"),
+    "ir-runbook": ("aws-incident-response-runbook", "ir_runbook.py", "Incident response runbook per scenario, or from GuardDuty"),
+    "spend": ("aws-spend-guardrails", "spend_guardrails.py", "Budgets, anomaly monitor and spend SCPs; review cost exports"),
+    "sandbox": ("sandbox-account-guardrail-pack", "sandbox_pack.py", "Guardrail pack for a sandbox OU (SCPs, baseline, expiry)"),
 }
 
 
