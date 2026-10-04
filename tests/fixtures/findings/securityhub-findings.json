@@ -1,0 +1,460 @@
+{
+  "Findings": [
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:123456789012:security-control/IAM.6/finding/00000000-0000-0000-0000-000000000001",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "ProductFields": {
+        "aws/securityhub/ProductName": "Security Hub"
+      },
+      "GeneratorId": "security-control/IAM.6",
+      "AwsAccountId": "123456789012",
+      "Region": "us-east-1",
+      "Types": [
+        "Software and Configuration Checks/Industry and Regulatory Standards"
+      ],
+      "CreatedAt": "2026-09-01T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z",
+      "Severity": {
+        "Label": "CRITICAL"
+      },
+      "Title": "Hardware MFA should be enabled for the root user",
+      "Description": "Example finding written for tests.",
+      "Resources": [
+        {
+          "Type": "AwsAccount",
+          "Id": "AWS::::Account:123456789012",
+          "Partition": "aws",
+          "Region": "us-east-1"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "IAM.6"
+      },
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "RecordState": "ACTIVE",
+      "Remediation": {
+        "Recommendation": {
+          "Text": "See the control documentation.",
+          "Url": "https://docs.aws.amazon.com/securityhub/latest/userguide/iam-controls.html"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:123456789012:security-control/S3.8/finding/00000000-0000-0000-0000-000000000002",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "ProductFields": {
+        "aws/securityhub/ProductName": "Security Hub"
+      },
+      "GeneratorId": "security-control/S3.8",
+      "AwsAccountId": "123456789012",
+      "Region": "us-east-1",
+      "Types": [
+        "Software and Configuration Checks/Industry and Regulatory Standards"
+      ],
+      "CreatedAt": "2026-09-01T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "Title": "S3 general purpose buckets should block public access",
+      "Description": "Example finding written for tests.",
+      "Resources": [
+        {
+          "Type": "AwsS3Bucket",
+          "Id": "arn:aws:s3:::example-public-site",
+          "Partition": "aws",
+          "Region": "us-east-1"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "S3.8"
+      },
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "RecordState": "ACTIVE",
+      "Remediation": {
+        "Recommendation": {
+          "Text": "See the control documentation.",
+          "Url": "https://docs.aws.amazon.com/securityhub/latest/userguide/s3-controls.html"
+        }
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:123456789012:security-control/S3.8/finding/00000000-0000-0000-0000-000000000003",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "ProductFields": {
+        "aws/securityhub/ProductName": "Security Hub"
+      },
+      "GeneratorId": "security-control/S3.8",
+      "AwsAccountId": "123456789012",
+      "Region": "us-east-1",
+      "Types": [
+        "Software and Configuration Checks/Industry and Regulatory Standards"
+      ],
+      "CreatedAt": "2026-09-01T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "Title": "S3 general purpose buckets should block public access",
+      "Description": "Example finding written for tests.",
+      "Resources": [
+        {
+          "Type": "AwsS3Bucket",
+          "Id": "arn:aws:s3:::example-reports",
+          "Partition": "aws",
+          "Region": "us-east-1"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "S3.8"
+      },
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "RecordState": "ACTIVE"
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:123456789012:security-control/EC2.19/finding/00000000-0000-0000-0000-000000000004",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "ProductFields": {
+        "aws/securityhub/ProductName": "Security Hub"
+      },
+      "GeneratorId": "security-control/EC2.19",
+      "AwsAccountId": "123456789012",
+      "Region": "us-east-1",
+      "Types": [
+        "Software and Configuration Checks/Industry and Regulatory Standards"
+      ],
+      "CreatedAt": "2026-09-01T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z",
+      "Severity": {
+        "Label": "CRITICAL"
+      },
+      "Title": "Security groups should not allow unrestricted access to ports with high risk",
+      "Description": "Example finding written for tests.",
+      "Resources": [
+        {
+          "Type": "AwsEc2SecurityGroup",
+          "Id": "arn:aws:ec2:us-east-1:123456789012:security-group/sg-0aaaabbbbccccdddd",
+          "Partition": "aws",
+          "Region": "us-east-1"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.19"
+      },
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "RecordState": "ACTIVE"
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:123456789012:security-control/EC2.10/finding/00000000-0000-0000-0000-000000000005",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "ProductFields": {
+        "aws/securityhub/ProductName": "Security Hub"
+      },
+      "GeneratorId": "security-control/EC2.10",
+      "AwsAccountId": "123456789012",
+      "Region": "us-east-1",
+      "Types": [
+        "Software and Configuration Checks/Industry and Regulatory Standards"
+      ],
+      "CreatedAt": "2026-09-01T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z",
+      "Severity": {
+        "Label": "MEDIUM"
+      },
+      "Title": "Amazon EC2 should be configured to use VPC endpoints",
+      "Description": "Example finding written for tests.",
+      "Resources": [
+        {
+          "Type": "AwsEc2Vpc",
+          "Id": "arn:aws:ec2:us-east-1:123456789012:vpc/vpc-0a1b2c3d4e5f60789",
+          "Partition": "aws",
+          "Region": "us-east-1"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.10"
+      },
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "RecordState": "ACTIVE"
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:123456789012:security-control/S3.8/finding/00000000-0000-0000-0000-000000000006",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "ProductFields": {
+        "aws/securityhub/ProductName": "Security Hub"
+      },
+      "GeneratorId": "security-control/S3.8",
+      "AwsAccountId": "123456789012",
+      "Region": "us-east-1",
+      "Types": [
+        "Software and Configuration Checks/Industry and Regulatory Standards"
+      ],
+      "CreatedAt": "2026-09-01T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "Title": "S3 general purpose buckets should block public access",
+      "Description": "Example finding written for tests.",
+      "Resources": [
+        {
+          "Type": "AwsS3Bucket",
+          "Id": "arn:aws:s3:::example-sandbox-scratch",
+          "Partition": "aws",
+          "Region": "us-east-1"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "S3.8"
+      },
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "RecordState": "ACTIVE"
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:123456789012:security-control/IAM.3/finding/00000000-0000-0000-0000-000000000007",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "ProductFields": {
+        "aws/securityhub/ProductName": "Security Hub"
+      },
+      "GeneratorId": "security-control/IAM.3",
+      "AwsAccountId": "123456789012",
+      "Region": "us-east-1",
+      "Types": [
+        "Software and Configuration Checks/Industry and Regulatory Standards"
+      ],
+      "CreatedAt": "2026-09-01T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z",
+      "Severity": {
+        "Label": "MEDIUM"
+      },
+      "Title": "IAM users' access keys should be rotated every 90 days or less",
+      "Description": "Example finding written for tests.",
+      "Resources": [
+        {
+          "Type": "AwsIamUser",
+          "Id": "arn:aws:iam::123456789012:user/alice",
+          "Partition": "aws",
+          "Region": "us-east-1"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "IAM.3"
+      },
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "RecordState": "ACTIVE"
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:123456789012:security-control/CloudTrail.1/finding/00000000-0000-0000-0000-000000000008",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "ProductFields": {
+        "aws/securityhub/ProductName": "Security Hub"
+      },
+      "GeneratorId": "security-control/CloudTrail.1",
+      "AwsAccountId": "123456789012",
+      "Region": "us-east-1",
+      "Types": [
+        "Software and Configuration Checks/Industry and Regulatory Standards"
+      ],
+      "CreatedAt": "2026-09-01T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "Title": "CloudTrail should be enabled and configured with at least one multi-Region trail",
+      "Description": "Example finding written for tests.",
+      "Resources": [
+        {
+          "Type": "AwsAccount",
+          "Id": "AWS::::Account:123456789012",
+          "Partition": "aws",
+          "Region": "us-east-1"
+        }
+      ],
+      "Compliance": {
+        "Status": "PASSED",
+        "SecurityControlId": "CloudTrail.1"
+      },
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "RecordState": "ACTIVE"
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:123456789012:security-control/S3.8/finding/00000000-0000-0000-0000-000000000009",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "ProductFields": {
+        "aws/securityhub/ProductName": "Security Hub"
+      },
+      "GeneratorId": "security-control/S3.8",
+      "AwsAccountId": "123456789012",
+      "Region": "us-east-1",
+      "Types": [
+        "Software and Configuration Checks/Industry and Regulatory Standards"
+      ],
+      "CreatedAt": "2026-09-01T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "Title": "S3 general purpose buckets should block public access",
+      "Description": "Example finding written for tests.",
+      "Resources": [
+        {
+          "Type": "AwsS3Bucket",
+          "Id": "arn:aws:s3:::example-old",
+          "Partition": "aws",
+          "Region": "us-east-1"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "S3.8"
+      },
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "RecordState": "ARCHIVED"
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:123456789012:security-control/EC2.2/finding/00000000-0000-0000-0000-000000000010",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "ProductFields": {
+        "aws/securityhub/ProductName": "Security Hub"
+      },
+      "GeneratorId": "security-control/EC2.2",
+      "AwsAccountId": "123456789012",
+      "Region": "us-east-1",
+      "Types": [
+        "Software and Configuration Checks/Industry and Regulatory Standards"
+      ],
+      "CreatedAt": "2026-09-01T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z",
+      "Severity": {
+        "Label": "HIGH"
+      },
+      "Title": "VPC default security groups should not allow inbound or outbound traffic",
+      "Description": "Example finding written for tests.",
+      "Resources": [
+        {
+          "Type": "AwsEc2SecurityGroup",
+          "Id": "arn:aws:ec2:us-east-1:123456789012:security-group/sg-0123456789abcdef0",
+          "Partition": "aws",
+          "Region": "us-east-1"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.2"
+      },
+      "Workflow": {
+        "Status": "SUPPRESSED"
+      },
+      "RecordState": "ACTIVE"
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:210987654321:security-control/IAM.3/finding/00000000-0000-0000-0000-000000000011",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "ProductFields": {
+        "aws/securityhub/ProductName": "Security Hub"
+      },
+      "GeneratorId": "security-control/IAM.3",
+      "AwsAccountId": "210987654321",
+      "Region": "us-east-1",
+      "Types": [
+        "Software and Configuration Checks/Industry and Regulatory Standards"
+      ],
+      "CreatedAt": "2026-09-01T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z",
+      "Severity": {
+        "Label": "MEDIUM"
+      },
+      "Title": "IAM users' access keys should be rotated every 90 days or less",
+      "Description": "Example finding written for tests.",
+      "Resources": [
+        {
+          "Type": "AwsIamUser",
+          "Id": "arn:aws:iam::210987654321:user/legacy",
+          "Partition": "aws",
+          "Region": "us-east-1"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "IAM.3"
+      },
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "RecordState": "ACTIVE"
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:123456789012:security-control/Config.1/finding/00000000-0000-0000-0000-000000000012",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "ProductFields": {
+        "aws/securityhub/ProductName": "Security Hub"
+      },
+      "GeneratorId": "security-control/Config.1",
+      "AwsAccountId": "123456789012",
+      "Region": "us-east-1",
+      "Types": [
+        "Software and Configuration Checks/Industry and Regulatory Standards"
+      ],
+      "CreatedAt": "2026-09-01T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z",
+      "Severity": {
+        "Label": "LOW"
+      },
+      "Title": "AWS Config should be enabled",
+      "Description": "Example finding written for tests.",
+      "Resources": [
+        {
+          "Type": "AwsAccount",
+          "Id": "AWS::::Account:123456789012",
+          "Partition": "aws",
+          "Region": "us-east-1"
+        }
+      ],
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "Config.1"
+      },
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "RecordState": "ACTIVE"
+    }
+  ]
+}

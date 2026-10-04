@@ -1,0 +1,17 @@
+[project]
+name = "aws-security-skills"
+version = "0.1.0"
+description = "Claude Code skills for AWS security: account audit, SCP guardrails, landing zone blast radius, IAM least privilege and Security Hub triage."
+requires-python = ">=3.11"
+license = { text = "MIT" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"
+
+[tool.ruff]
+line-length = 150
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]

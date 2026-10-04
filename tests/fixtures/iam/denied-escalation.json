@@ -1,0 +1,4 @@
+{"Version": "2012-10-17", "Statement": [
+  {"Sid": "IamAll", "Effect": "Allow", "Action": "iam:*", "Resource": "*"},
+  {"Sid": "NoEscalation", "Effect": "Deny", "Action": ["iam:CreatePolicyVersion", "iam:SetDefaultPolicyVersion", "iam:Attach*", "iam:Put*", "iam:AddUserToGroup", "iam:CreateAccessKey", "iam:CreateLoginProfile", "iam:UpdateLoginProfile", "iam:UpdateAssumeRolePolicy", "iam:PassRole"], "Resource": "*"}
+]}

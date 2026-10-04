@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+
+# Local audit output: never commit data collected from a real account
+aws-audit-*/
+scps/
+report.json
+
+# Editors and OS
+.DS_Store
+.idea/
+.vscode/

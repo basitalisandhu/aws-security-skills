@@ -1,0 +1,80 @@
+{
+  "Findings": [
+    {
+      "SchemaVersion": "2.0",
+      "AccountId": "123456789012",
+      "Region": "us-east-1",
+      "Partition": "aws",
+      "Arn": "arn:aws:guardduty:us-east-1:123456789012:detector/12abc34d567e8fa901bc2d34eexample/finding/example-finding-0001",
+      "Id": "example-finding-0001",
+      "Type": "UnauthorizedAccess:EC2/SSHBruteForce",
+      "Severity": 2.0,
+      "Title": "Example: SSH brute force attempts against i-0123456789abcdef0",
+      "Description": "Example finding written for tests.",
+      "Resource": {
+        "ResourceType": "Instance",
+        "InstanceDetails": {
+          "InstanceId": "i-0123456789abcdef0"
+        }
+      },
+      "Service": {
+        "Archived": false,
+        "Count": 12
+      },
+      "CreatedAt": "2026-09-29T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z"
+    },
+    {
+      "SchemaVersion": "2.0",
+      "AccountId": "123456789012",
+      "Region": "us-east-1",
+      "Partition": "aws",
+      "Arn": "arn:aws:guardduty:us-east-1:123456789012:detector/12abc34d567e8fa901bc2d34eexample/finding/example-finding-0002",
+      "Id": "example-finding-0002",
+      "Type": "UnauthorizedAccess:IAMUser/InstanceCredentialExfiltration.OutsideAWS",
+      "Severity": 8.0,
+      "Title": "Example: credentials for an instance role used from an outside address",
+      "Description": "Example finding written for tests.",
+      "Resource": {
+        "ResourceType": "AccessKey",
+        "AccessKeyDetails": {
+          "AccessKeyId": "AKIAIOSFODNN7EXAMPLE",
+          "UserName": "app-role",
+          "UserType": "AssumedRole"
+        }
+      },
+      "Service": {
+        "Archived": false,
+        "Count": 3
+      },
+      "CreatedAt": "2026-09-29T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z"
+    },
+    {
+      "SchemaVersion": "2.0",
+      "AccountId": "123456789012",
+      "Region": "us-east-1",
+      "Partition": "aws",
+      "Arn": "arn:aws:guardduty:us-east-1:123456789012:detector/12abc34d567e8fa901bc2d34eexample/finding/example-finding-0003",
+      "Id": "example-finding-0003",
+      "Type": "Policy:S3/BucketBlockPublicAccessDisabled",
+      "Severity": 5.0,
+      "Title": "Example: public access block disabled on example-public-site",
+      "Description": "Example finding written for tests.",
+      "Resource": {
+        "ResourceType": "S3Bucket",
+        "S3BucketDetails": [
+          {
+            "Name": "example-public-site"
+          }
+        ]
+      },
+      "Service": {
+        "Archived": true,
+        "Count": 1
+      },
+      "CreatedAt": "2026-09-29T00:00:00.000Z",
+      "UpdatedAt": "2026-09-30T00:00:00.000Z"
+    }
+  ]
+}

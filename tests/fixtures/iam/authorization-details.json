@@ -1,0 +1,22 @@
+{
+  "UserDetailList": [
+    {"UserName": "alice", "Arn": "arn:aws:iam::123456789012:user/alice", "UserPolicyList": [
+      {"PolicyName": "everything", "PolicyDocument": {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": "*", "Resource": "*"}]}}
+    ]}
+  ],
+  "GroupDetailList": [],
+  "RoleDetailList": [
+    {"RoleName": "app-role", "Arn": "arn:aws:iam::123456789012:role/app-role", "RolePolicyList": [
+      {"PolicyName": "scoped", "PolicyDocument": "%7B%22Version%22%3A%222012-10-17%22%2C%22Statement%22%3A%5B%7B%22Effect%22%3A%22Allow%22%2C%22Action%22%3A%22s3%3AGetObject%22%2C%22Resource%22%3A%22arn%3Aaws%3As3%3A%3A%3Aexample-bucket%2F%2A%22%7D%5D%7D"}
+    ]}
+  ],
+  "Policies": [
+    {"PolicyName": "LegacyAdmin", "Arn": "arn:aws:iam::123456789012:policy/LegacyAdmin", "DefaultVersionId": "v2",
+     "PolicyVersionList": [
+       {"VersionId": "v2", "IsDefaultVersion": true, "Document": {"Version": "2012-10-17", "Statement": [{"Sid": "All", "Effect": "Allow", "Action": ["*"], "Resource": ["*"]}]}},
+       {"VersionId": "v1", "IsDefaultVersion": false, "Document": {"Version": "2012-10-17", "Statement": []}}
+     ]},
+    {"PolicyName": "AdministratorAccess", "Arn": "arn:aws:iam::aws:policy/AdministratorAccess", "DefaultVersionId": "v1",
+     "PolicyVersionList": [{"VersionId": "v1", "IsDefaultVersion": true, "Document": {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Action": "*", "Resource": "*"}]}}]}
+  ]
+}

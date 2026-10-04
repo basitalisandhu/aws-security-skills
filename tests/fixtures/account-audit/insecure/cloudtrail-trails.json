@@ -1,0 +1,1 @@
+{"trailList": [{"Name": "local-trail", "TrailARN": "arn:aws:cloudtrail:us-east-1:123456789012:trail/local-trail", "HomeRegion": "us-east-1", "IsMultiRegionTrail": false, "LogFileValidationEnabled": false}]}

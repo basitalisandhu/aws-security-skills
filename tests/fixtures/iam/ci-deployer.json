@@ -1,0 +1,6 @@
+{"Version": "2012-10-17", "Statement": [
+  {"Sid": "Deploy", "Effect": "Allow", "Action": ["lambda:CreateFunction", "lambda:InvokeFunction", "lambda:GetFunction", "iam:PassRole"], "Resource": "*"},
+  {"Sid": "Assume", "Effect": "Allow", "Action": "sts:AssumeRole", "Resource": "*"},
+  {"Sid": "Buckets", "Effect": "Allow", "Action": ["s3:*", "s3:Get*"], "Resource": "*"},
+  {"Sid": "PolicyAdmin", "Effect": "Allow", "Action": "iam:CreatePolicyVersion", "Resource": "arn:aws:iam::123456789012:policy/*"}
+]}
