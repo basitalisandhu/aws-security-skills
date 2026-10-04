@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="1032" viewBox="0 0 920 1032" role="img" aria-label="aws-security audit, then scp-lint, on the committed fixtures">
+<title>aws-security audit, then scp-lint, on the committed fixtures</title>
+<rect width="920" height="1032" rx="8" fill="#0A1628"/>
+<path d="M0 8a8 8 0 0 1 8-8h904a8 8 0 0 1 8 8v28h-920z" fill="#13233D"/>
+<circle cx="20" cy="18" r="6" fill="#FF7B72"/><circle cx="40" cy="18" r="6" fill="#E3B341"/><circle cx="60" cy="18" r="6" fill="#7EE787"/>
+<text x="460" y="23" fill="#7D8BA1" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="13" text-anchor="middle" xml:space="preserve">aws-security audit, then scp-lint, on the committed fixtures</text>
+<g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="14" fill="#D7DEE8" xml:space="preserve" style="white-space:pre">
+<text x="24" y="68" xml:space="preserve"><tspan fill="#7FD1AE">$ aws-security audit tests/fixtures/account-audit/insecure --as-of 2026-10-01</tspan></text>
+<text x="24" y="88" xml:space="preserve">AWS account audit (123456789012), as of 2026-10-01</text>
+<text x="24" y="128" xml:space="preserve">SEVERITY  CHECK                   REGION  RESOURCE</text>
+<text x="24" y="148" xml:space="preserve">   FINDING</text>
+<text x="24" y="168" xml:space="preserve"><tspan fill="#FF7B72">CRITICAL</tspan>  ROOT-ACCESS-KEYS        -       root</text>
+<text x="24" y="188" xml:space="preserve">   Root user has access keys</text>
+<text x="24" y="208" xml:space="preserve"><tspan fill="#FF7B72">CRITICAL</tspan>  ROOT-MFA                -       root</text>
+<text x="24" y="228" xml:space="preserve">   Root user has no MFA device</text>
+<text x="24" y="248" xml:space="preserve"><tspan fill="#FF7B72">CRITICAL</tspan>  SG-OPEN-ALL             -       sg-0aaaabbbbccccdddd (wide-open)</text>
+<text x="24" y="268" xml:space="preserve">   Security group allows all traffic from the internet</text>
+<text x="24" y="288" xml:space="preserve"><tspan fill="#FF7B72">HIGH</tspan>      CT-MULTI-REGION         -       account</text>
+<text x="24" y="308" xml:space="preserve">   No multi-region CloudTrail trail</text>
+<text x="24" y="328" xml:space="preserve"><tspan fill="#FF7B72">HIGH</tspan>      CT-NOT-LOGGING          -       arn:aws:cloudtrail:us-east-1:123456789012:trail/local-trai</text>
+<text x="24" y="348" xml:space="preserve">l  Trail is not logging</text>
+<text x="24" y="368" xml:space="preserve"><tspan fill="#FF7B72">HIGH</tspan>      GD-DISABLED             -       account</text>
+<text x="24" y="388" xml:space="preserve">   GuardDuty is not enabled</text>
+<text x="24" y="408" xml:space="preserve"><tspan fill="#FF7B72">HIGH</tspan>      IAM-ADMIN-POLICY        -       arn:aws:iam::123456789012:policy/LegacyAdmin</text>
+<text x="24" y="428" xml:space="preserve">   managed policy grants full administrator access</text>
+<text x="24" y="448" xml:space="preserve"><tspan fill="#FF7B72">HIGH</tspan>      IAM-ADMIN-POLICY        -       arn:aws:iam::123456789012:user/alice inline:everything</text>
+<text x="24" y="468" xml:space="preserve">   user inline policy grants full administrator access</text>
+<text x="24" y="488" xml:space="preserve"><tspan fill="#7D8BA1">[... 70 more lines; run the command to see them all ...]</tspan></text>
+<text x="24" y="508" xml:space="preserve">Counts: critical 3, high 9, medium 7, low 0, info 0</text>
+<text x="24" y="528" xml:space="preserve">Not evaluated (input missing):</text>
+<text x="24" y="548" xml:space="preserve">  - S3-BUCKET-PAB: s3-public-access-block/example-not-collected.json not found</text>
+<text x="24" y="568" xml:space="preserve">Findings come from saved CLI output and need human verification before any change.</text>
+<text x="24" y="588" xml:space="preserve"><tspan fill="#7D8BA1">[exit 1]</tspan></text>
+<text x="24" y="628" xml:space="preserve"><tspan fill="#7FD1AE">$ aws-security scp-lint tests/fixtures/scp/bad-notaction-and-principal.json</tspan></text>
+<text x="24" y="648" xml:space="preserve"><tspan fill="#7FD1AE">tests/fixtures/scp/bad-region-action-star.json</tspan></text>
+<text x="24" y="668" xml:space="preserve">tests/fixtures/scp/bad-notaction-and-principal.json: 408/5120 chars, 5 issue(s)</text>
+<text x="24" y="688" xml:space="preserve">  <tspan fill="#FF7B72">error</tspan>   SCP-ALLOW-NOTACTION      AllowMostThings                    Allow with NotAction allows</text>
+<text x="24" y="708" xml:space="preserve">every action not listed; list the allowed actions instead</text>
+<text x="24" y="728" xml:space="preserve">  <tspan fill="#E3B341">warning</tspan> SCP-DENY-NOTACTION-BARE  DenyEverythingElse                 Deny with NotAction and no</text>
+<text x="24" y="748" xml:space="preserve">Condition denies every action not listed, in every region</text>
+<text x="24" y="768" xml:space="preserve">  <tspan fill="#FF7B72">error</tspan>   SCP-PRINCIPAL            DenyForOneRole                     SCPs do not take Principal or</text>
+<text x="24" y="788" xml:space="preserve">NotPrincipal; use a Condition on aws:PrincipalArn</text>
+<text x="24" y="808" xml:space="preserve">  <tspan fill="#E3B341">warning</tspan> SCP-DUPLICATE-SID        DenyForOneRole                     Sid 'DenyForOneRole' is used</text>
+<text x="24" y="828" xml:space="preserve">more than once</text>
+<text x="24" y="848" xml:space="preserve">  <tspan fill="#FF7B72">error</tspan>   SCP-DENY-ALL             DenyForOneRole                     Deny * on * without a</text>
+<text x="24" y="868" xml:space="preserve">Condition blocks every action in the attached accounts</text>
+<text x="24" y="888" xml:space="preserve">tests/fixtures/scp/bad-region-action-star.json: 179/5120 chars, 2 issue(s)</text>
+<text x="24" y="908" xml:space="preserve">  <tspan fill="#FF7B72">error</tspan>   SCP-REGION-BLOCKS-GLOBAL DenyOtherRegions                   region deny uses Action *:</text>
+<text x="24" y="928" xml:space="preserve">global services (IAM, STS, Organizations, Route 53, CloudFront, Support) are served from us-east-1</text>
+<text x="24" y="948" xml:space="preserve">and will be denied; use NotAction with the global service list</text>
+<text x="24" y="968" xml:space="preserve">  info    SCP-NO-EXEMPTION         DenyOtherRegions                   region deny has no</text>
+<text x="24" y="988" xml:space="preserve">aws:PrincipalArn exemption for a break-glass role</text>
+<text x="24" y="1008" xml:space="preserve"><tspan fill="#7D8BA1">[exit 1]</tspan></text>
+</g>
+</svg>

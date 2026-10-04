@@ -8,6 +8,12 @@ It is written for cloud and platform engineers who look after one or many AWS ac
 
 No network access from the scripts, no telemetry. Nothing in this repository changes an AWS account: every skill proposes fix commands and runs one only after you confirm that exact command.
 
+## Demo
+
+![Terminal output of aws-security audit and scp-lint run on the committed test fixtures](docs/demo.svg)
+
+Generated from the committed fixtures by [`scripts/render_demo.py`](scripts/render_demo.py); run `python3 scripts/render_demo.py` to regenerate it.
+
 ## Quickstart
 
 In a Claude Code session:
