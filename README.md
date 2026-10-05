@@ -6,6 +6,8 @@ aws-security-skills is a Claude Code plugin marketplace with one plugin, `aws-se
 
 It is written for cloud and platform engineers who look after one or many AWS accounts, especially multi-account organizations governed by service control policies. It exists because the same questions come up on every account (is root protected, is CloudTrail on, can this role escalate, which SCPs go where, what do we fix first in Security Hub, what may an AI agent do here, what do we do in the first hour of an incident, how do we stop a runaway bill), and a scripted procedure answers them the same way each time.
 
+Common searches it answers: a CIS AWS Foundations benchmark style account check, a Well-Architected security pillar review of account structure, and a permission boundary for an AI agent role.
+
 No network access from the scripts, no telemetry. Nothing in this repository changes an AWS account: every skill proposes fix commands and runs one only after you confirm that exact command.
 
 ## Demo
@@ -48,11 +50,11 @@ Requirements: Python 3.11 or newer as `python3`. AWS CLI v2 and read-only creden
 The plugin installs as shown in the Quickstart. The skill scripts are also published as one container image on GitHub Packages (linux/amd64 and linux/arm64) for running them without a checkout, for example in CI. The image's entrypoint is `aws-security <subcommand> [args]`; mount the files to read at `/work`, which is the working directory:
 
 ```bash
-docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.2.0 audit /work/exports
-docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.2.0 iam-review /work/policy.json
-docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.2.0 scp-build /work/scp-spec.yaml --out /work/scps
-docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.2.0 ir-runbook triage --guardduty /work/findings.json --out /work/ir
-docker run --rm ghcr.io/basitalisandhu/aws-security-skills:0.2.0 --help
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.2.1 audit /work/exports
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.2.1 iam-review /work/policy.json
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.2.1 scp-build /work/scp-spec.yaml --out /work/scps
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.2.1 ir-runbook triage --guardduty /work/findings.json --out /work/ir
+docker run --rm ghcr.io/basitalisandhu/aws-security-skills:0.2.1 --help
 ```
 
 This pack is also part of [claude-skills](https://github.com/basitalisandhu/claude-skills), which holds every skill I maintain as one marketplace: `/plugin marketplace add basitalisandhu/claude-skills`.
@@ -75,10 +77,10 @@ Every subcommand passes its arguments to the script unchanged, so `aws-security 
 Each image is signed with cosign (keyless) and has a build provenance attestation and an SPDX SBOM (attached to the GitHub Release). To verify:
 
 ```bash
-cosign verify ghcr.io/basitalisandhu/aws-security-skills:0.2.0 \
+cosign verify ghcr.io/basitalisandhu/aws-security-skills:0.2.1 \
   --certificate-identity-regexp '^https://github.com/basitalisandhu/aws-security-skills/' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
-gh attestation verify oci://ghcr.io/basitalisandhu/aws-security-skills:0.2.0 --owner basitalisandhu
+gh attestation verify oci://ghcr.io/basitalisandhu/aws-security-skills:0.2.1 --owner basitalisandhu
 ```
 
 ## When to use this

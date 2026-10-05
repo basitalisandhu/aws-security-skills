@@ -4,6 +4,18 @@ All notable changes to this project are documented here. The format follows Keep
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-10-05
+
+### Changed
+
+- Rewrote all nine skill descriptions to 363 to 594 characters (from up to 1,020): each starts with a verb, states the goal before the mechanism, carries one quoted phrase a user would type, a "Use when ..." sentence and a "Not for ..." boundary, and stays double-quoted.
+- `aws-spend-guardrails` and `sandbox-account-guardrail-pack` no longer import modules from sibling skills, so each works when installed on its own: they carry private copies (`_scp_builder.py`, `_scp_lint.py`, and `_spend_guardrails.py` in the sandbox pack), each with a header naming its origin, and `tests/test_vendored_helpers.py` fails when a copy drifts and runs both skills from a folder that holds only that skill.
+- `aws-account-audit` states its boundary with `aws-identity-and-logging-evidence` in compliance-evidence-skills.
+- Tests open text files with `encoding="utf-8"`, and CI runs tests, ruff and the `--help` check on `windows-latest` as well as Ubuntu and macOS.
+- The plugin and root READMEs mention the CIS AWS Foundations benchmark, the Well-Architected security pillar and permission boundaries, with what the skills do and do not cover.
+- `scripts/validate_plugins.py` now fails when a description is over 600 characters, is not double-quoted, or lacks "Use " or "Not for", and when a SKILL.md has no `## Limits` section; `tests/test_validate_plugins.py` covers each rule.
+- Version 0.2.1 in `pyproject.toml`, `plugin.json`, `marketplace.json`, the dispatcher and the README container examples.
+
 ## [0.2.0] - 2026-10-04
 
 Four new skills, each with a standard-library script, hand-written fixtures with planted problems, and offline tests. The container image gains four subcommands.

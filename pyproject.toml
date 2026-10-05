@@ -1,6 +1,6 @@
 [project]
 name = "aws-security-skills"
-version = "0.2.0"
+version = "0.2.1"
 description = "Claude Code skills for AWS security: account audit, SCP guardrails, landing zone blast radius, IAM least privilege, Security Hub triage, agent-safe access, incident response runbooks, spend guardrails and sandbox guardrails."
 requires-python = ">=3.11"
 license = { text = "MIT" }

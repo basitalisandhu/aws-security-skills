@@ -6,14 +6,14 @@
     "url": "https://github.com/basitalisandhu"
   },
   "metadata": {
-    "version": "0.2.0"
+    "version": "0.2.1"
   },
   "plugins": [
     {
       "name": "aws-security",
       "source": "./plugins/aws-security",
       "description": "Nine AWS security skills: account audit, SCP guardrails, landing zone blast radius, IAM least-privilege review, Security Hub triage, agent-safe AWS access, incident response runbooks, spend guardrails and a sandbox guardrail pack. Scripts run offline on specs and saved CLI output.",
-      "version": "0.2.0",
+      "version": "0.2.1",
       "author": {"name": "Muhammad Basit Ali", "url": "https://github.com/basitalisandhu"},
       "homepage": "https://github.com/basitalisandhu/aws-security-skills",
       "repository": "https://github.com/basitalisandhu/aws-security-skills",
