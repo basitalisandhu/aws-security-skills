@@ -4,6 +4,9 @@ All notable changes to this project are documented here. The format follows Keep
 
 ## [Unreleased]
 
+- Warn when a region Deny uses StringEquals or StringLike on aws:RequestedRegion,
+  with offline positive and negative regression tests.
+
 ## [0.2.0] - 2026-10-04
 
 Four new skills, each with a standard-library script, hand-written fixtures with planted problems, and offline tests. The container image gains four subcommands.

@@ -1,9 +1,34 @@
 import json
 
+import pytest
 from conftest import FIXTURES, load_script, run_json, run_main
 
 mod = load_script("scp-guardrails", "scp_lint.py")
 SCP = FIXTURES / "scp"
+
+
+@pytest.mark.parametrize("operator", ["StringEquals", "StringLike"])
+def test_region_deny_warns_when_operator_denies_allowed_regions(operator):
+    policy = json.loads((SCP / "bad-region-operator.json").read_text())
+    statement = policy["Statement"][0]
+    statement["Condition"] = {operator: {"aws:RequestedRegion": ["eu-west-1"]}}
+    found = mod.lint_policy(policy)
+    assert any(i["id"] == "SCP-REGION-OPERATOR" and i["level"] == "warning" for i in found)
+    assert "SCP-REGION-OPERATOR" in ids(SCP / "bad-region-operator.json")
+
+
+@pytest.mark.parametrize("effect,operator,key", [
+    ("Deny", "StringNotEquals", "aws:RequestedRegion"),
+    ("Deny", "StringNotLike", "aws:RequestedRegion"),
+    ("Allow", "StringEquals", "aws:RequestedRegion"),
+    ("Deny", "StringEquals", "aws:PrincipalArn"),
+])
+def test_other_condition_operators_do_not_trigger_region_warning(effect, operator, key):
+    policy = {"Version": "2012-10-17", "Statement": [{
+        "Effect": effect, "Action": "ec2:*", "Resource": "*",
+        "Condition": {operator: {key: "eu-west-1"}},
+    }]}
+    assert not any(i["id"] == "SCP-REGION-OPERATOR" for i in mod.lint_policy(policy))
 
 
 def ids(path):
