@@ -62,9 +62,9 @@ def test_scps_reuse_scp_builder_and_spend_statements():
     assert st["DenyIamUserCreation"]["Condition"]["ArnNotLike"]["aws:PrincipalArn"] == exempt
     assert st["ProtectBudgetsAndAnomalyMonitors"]["Condition"]["ArnNotLike"]["aws:PrincipalArn"] == exempt
     assert st["RequireOwnerTagOnLaunch"]["Condition"] == {"Null": {"aws:RequestTag/owner": "true"}}
-    # Imported from the scp-guardrails and aws-spend-guardrails scripts, not copied.
-    assert Path(mod.scp_builder.__file__).resolve() == script_path("scp-guardrails", "scp_builder.py")
-    assert Path(mod.spend_guardrails.__file__).resolve() == script_path("aws-spend-guardrails", "spend_guardrails.py")
+    # Private copies inside this skill (kept identical to the origin by test_vendored_helpers.py).
+    assert Path(mod.scp_builder.__file__).resolve() == script_path("sandbox-account-guardrail-pack", "_scp_builder.py")
+    assert Path(mod.spend_guardrails.__file__).resolve() == script_path("sandbox-account-guardrail-pack", "_spend_guardrails.py")
 
 
 def test_baseline_checklist_covers_the_required_items():

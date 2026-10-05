@@ -82,7 +82,7 @@ def test_table_output_and_report_file(tmp_path):
     rc, text, _ = run_main(mod, [str(INSECURE), "--as-of", "2026-10-01", "--output", str(out)])
     assert rc == 1
     assert "ROOT-MFA" in text and "need human verification" in text
-    assert json.loads(out.read_text())["counts"]["critical"] == 3
+    assert json.loads(out.read_text(encoding="utf-8"))["counts"]["critical"] == 3
 
 
 def test_bad_input_exit_2(tmp_path, write):

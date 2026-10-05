@@ -28,7 +28,7 @@ def test_plan_writes_every_file_and_passes_its_own_review(tmp_path):
     assert sorted(p.name for p in tmp_path.iterdir()) == [
         "commands.md", "permission-policy.json", "permissions-boundary.json", "sandbox-scp.json",
         "trust-policy-123456789012.json", "trust-policy-locked.json"]
-    assert json.loads((tmp_path / "permission-policy.json").read_text()) == out["files"]["permission-policy.json"]
+    assert json.loads((tmp_path / "permission-policy.json").read_text(encoding="utf-8")) == out["files"]["permission-policy.json"]
 
 
 def test_permission_policy_never_grants_star_or_service_wildcards():
