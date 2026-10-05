@@ -4,6 +4,18 @@ All notable changes to this project are documented here. The format follows Keep
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-05
+
+### Added
+
+- `aws-agent-session-audit`: `agent_session_audit.py` audits what an AI coding agent did in an AWS account from saved CloudTrail events (`lookup-events` output, delivered log files including `.json.gz`, or JSON lines of records) filtered by role session name or role: the time window, sessions and source IPs, actions by service with reads, writes and errors, resources touched, and 7 checks (logging and detection tampering, IAM writes and role assumption, destructive calls, actions outside a declared allow list, console sign-in, bursts of access-denied errors, other regions). With `--granted` it proposes which explicit grants to remove and what to replace each wildcard grant with; without it, it drafts an allow list from the actions used. Markdown or JSON, `--out`, access key ids and request parameters never printed, `--redact` for account ids, IPs and e-mail addresses. 14 tests with synthetic records.
+- Dispatcher subcommand `agent-audit`; the container check in CI runs its `--help`.
+
+### Changed
+
+- `iam-least-privilege-review` and `agent-safe-aws-access` name their boundary with the new skill.
+- Version 0.3.0 in `pyproject.toml`, `plugin.json`, `marketplace.json`, the dispatcher and the README container examples; the READMEs list the new skill and the searches it answers.
+
 ## [0.2.1] - 2026-10-05
 
 ### Changed
