@@ -24,7 +24,7 @@ def sids(result):
 def test_pack_writes_every_file(tmp_path):
     rc, _, _ = run_main(mod, ["--spec", str(SPEC), "--out", str(tmp_path)])
     assert rc == 0
-    written = sorted(str(p.relative_to(tmp_path)) for p in tmp_path.rglob("*") if p.is_file())
+    written = sorted(p.relative_to(tmp_path).as_posix() for p in tmp_path.rglob("*") if p.is_file())
     assert written == sorted([
         "README-sandbox-users.md", "baseline-checklist.md", "auto-expiry/design.md", "auto-expiry/scheduler-role-policy.json",
         "auto-expiry/sweeper-role-policy.json", "auto-expiry/ttl_sweeper.py", "budget/anomaly-monitor.json",
