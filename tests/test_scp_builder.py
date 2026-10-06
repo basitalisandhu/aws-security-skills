@@ -26,7 +26,7 @@ def test_full_spec_builds_valid_documents_under_limit(tmp_path):
         assert lint.lint_policy(d) == []
     written = sorted(p.name for p in tmp_path.iterdir())
     assert written == ["manifest.json"] + [f"scp-{i:02d}.json" for i in range(1, len(docs) + 1)]
-    assert json.loads((tmp_path / "scp-01.json").read_text()) == docs[0]
+    assert json.loads((tmp_path / "scp-01.json").read_text(encoding="utf-8")) == docs[0]
     assert out["manifest"]["lint"] == []
 
 

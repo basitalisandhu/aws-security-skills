@@ -4,8 +4,34 @@ All notable changes to this project are documented here. The format follows Keep
 
 ## [Unreleased]
 
-- Warn when a region Deny uses StringEquals or StringLike on aws:RequestedRegion,
-  with offline positive and negative regression tests.
+### Added
+
+- Warn when a region Deny uses a positive string comparison on aws:RequestedRegion,
+  including IfExists and set-operator variants, with offline regression tests.
+
+## [0.3.0] - 2026-10-05
+
+### Added
+
+- `aws-agent-session-audit`: `agent_session_audit.py` audits what an AI coding agent did in an AWS account from saved CloudTrail events (`lookup-events` output, delivered log files including `.json.gz`, or JSON lines of records) filtered by role session name or role: the time window, sessions and source IPs, actions by service with reads, writes and errors, resources touched, and 7 checks (logging and detection tampering, IAM writes and role assumption, destructive calls, actions outside a declared allow list, console sign-in, bursts of access-denied errors, other regions). With `--granted` it proposes which explicit grants to remove and what to replace each wildcard grant with; without it, it drafts an allow list from the actions used. Markdown or JSON, `--out`, access key ids and request parameters never printed, `--redact` for account ids, IPs and e-mail addresses. 14 tests with synthetic records.
+- Dispatcher subcommand `agent-audit`; the container check in CI runs its `--help`.
+
+### Changed
+
+- `iam-least-privilege-review` and `agent-safe-aws-access` name their boundary with the new skill.
+- Version 0.3.0 in `pyproject.toml`, `plugin.json`, `marketplace.json`, the dispatcher and the README container examples; the READMEs list the new skill and the searches it answers.
+
+## [0.2.1] - 2026-10-05
+
+### Changed
+
+- Rewrote all nine skill descriptions to 363 to 594 characters (from up to 1,020): each starts with a verb, states the goal before the mechanism, carries one quoted phrase a user would type, a "Use when ..." sentence and a "Not for ..." boundary, and stays double-quoted.
+- `aws-spend-guardrails` and `sandbox-account-guardrail-pack` no longer import modules from sibling skills, so each works when installed on its own: they carry private copies (`_scp_builder.py`, `_scp_lint.py`, and `_spend_guardrails.py` in the sandbox pack), each with a header naming its origin, and `tests/test_vendored_helpers.py` fails when a copy drifts and runs both skills from a folder that holds only that skill.
+- `aws-account-audit` states its boundary with `aws-identity-and-logging-evidence` in compliance-evidence-skills.
+- Tests open text files with `encoding="utf-8"`, and CI runs tests, ruff and the `--help` check on `windows-latest` as well as Ubuntu and macOS.
+- The plugin and root READMEs mention the CIS AWS Foundations benchmark, the Well-Architected security pillar and permission boundaries, with what the skills do and do not cover.
+- `scripts/validate_plugins.py` now fails when a description is over 600 characters, is not double-quoted, or lacks "Use " or "Not for", and when a SKILL.md has no `## Limits` section; `tests/test_validate_plugins.py` covers each rule.
+- Version 0.2.1 in `pyproject.toml`, `plugin.json`, `marketplace.json`, the dispatcher and the README container examples.
 
 ## [0.2.0] - 2026-10-04
 

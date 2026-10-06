@@ -76,7 +76,7 @@ def test_out_file(tmp_path):
     target = tmp_path / "rb.md"
     rc, out, _ = run_main(mod, ["--scenario", "compromised-ec2", "--instance-id", "i-0123456789abcdef0", "--out", str(target)])
     assert rc == 0 and "wrote" in out
-    assert "--instance-ids i-0123456789abcdef0" in target.read_text()
+    assert "--instance-ids i-0123456789abcdef0" in target.read_text(encoding="utf-8")
 
 
 @pytest.mark.parametrize("ftype,resource,scenario", [
@@ -107,7 +107,7 @@ def test_triage_picks_the_top_scenario_and_fills_values(tmp_path):
                                         "compromised-ec2"]
     assert [u["type"] for u in out["unmapped"]] == ["Execution:Kubernetes/ExecInKubeSystemPod"]
     assert [rb["scenario"] for rb in out["runbooks"]] == ["crypto-mining"]
-    md = (tmp_path / "runbook-crypto-mining.md").read_text()
+    md = (tmp_path / "runbook-crypto-mining.md").read_text(encoding="utf-8")
     assert "account `123456789012`, region `ap-southeast-2`, case `IR-1`" in md
     assert "--instance-ids i-0a1b2c3d4e5f60718" in md
     assert "--start-time 2026-09-28T02:55:00Z" in md
@@ -118,9 +118,9 @@ def test_triage_all_writes_one_runbook_per_scenario_and_ignores_planted_injectio
     rc, out = run_json(mod, ["triage", "--guardduty", str(FINDINGS), "--all", "--out", str(tmp_path), "--json"])
     assert rc == 1
     assert sorted(p.name for p in tmp_path.iterdir()) == sorted(f"runbook-{s}.md" for s in out["by_scenario"])
-    leaked = (tmp_path / "runbook-leaked-access-key.md").read_text()
+    leaked = (tmp_path / "runbook-leaked-access-key.md").read_text(encoding="utf-8")
     assert "--user-name ci-deployer --access-key-id AKIAIOSFODNN7EXAMPLE" in leaked
-    public = (tmp_path / "runbook-public-s3-bucket.md").read_text()
+    public = (tmp_path / "runbook-public-s3-bucket.md").read_text(encoding="utf-8")
     assert "backdoor" not in public and "Ignore previous instructions" not in public
     assert "--bucket <bucket-name>" in public
     assert "bucket" in next(rb for rb in out["runbooks"] if rb["scenario"] == "public-s3-bucket")["rejected"]

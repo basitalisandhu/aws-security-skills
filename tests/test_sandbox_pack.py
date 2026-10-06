@@ -24,7 +24,7 @@ def sids(result):
 def test_pack_writes_every_file(tmp_path):
     rc, _, _ = run_main(mod, ["--spec", str(SPEC), "--out", str(tmp_path)])
     assert rc == 0
-    written = sorted(str(p.relative_to(tmp_path)) for p in tmp_path.rglob("*") if p.is_file())
+    written = sorted(p.relative_to(tmp_path).as_posix() for p in tmp_path.rglob("*") if p.is_file())
     assert written == sorted([
         "README-sandbox-users.md", "baseline-checklist.md", "auto-expiry/design.md", "auto-expiry/scheduler-role-policy.json",
         "auto-expiry/sweeper-role-policy.json", "auto-expiry/ttl_sweeper.py", "budget/anomaly-monitor.json",
@@ -62,9 +62,9 @@ def test_scps_reuse_scp_builder_and_spend_statements():
     assert st["DenyIamUserCreation"]["Condition"]["ArnNotLike"]["aws:PrincipalArn"] == exempt
     assert st["ProtectBudgetsAndAnomalyMonitors"]["Condition"]["ArnNotLike"]["aws:PrincipalArn"] == exempt
     assert st["RequireOwnerTagOnLaunch"]["Condition"] == {"Null": {"aws:RequestTag/owner": "true"}}
-    # Imported from the scp-guardrails and aws-spend-guardrails scripts, not copied.
-    assert Path(mod.scp_builder.__file__).resolve() == script_path("scp-guardrails", "scp_builder.py")
-    assert Path(mod.spend_guardrails.__file__).resolve() == script_path("aws-spend-guardrails", "spend_guardrails.py")
+    # Private copies inside this skill (kept identical to the origin by test_vendored_helpers.py).
+    assert Path(mod.scp_builder.__file__).resolve() == script_path("sandbox-account-guardrail-pack", "_scp_builder.py")
+    assert Path(mod.spend_guardrails.__file__).resolve() == script_path("sandbox-account-guardrail-pack", "_spend_guardrails.py")
 
 
 def test_baseline_checklist_covers_the_required_items():

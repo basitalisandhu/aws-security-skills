@@ -7,21 +7,33 @@ mod = load_script("scp-guardrails", "scp_lint.py")
 SCP = FIXTURES / "scp"
 
 
-@pytest.mark.parametrize("operator", ["StringEquals", "StringLike"])
+@pytest.mark.parametrize("operator", [
+    "StringEquals", "StringLike", "StringEqualsIfExists", "StringLikeIfExists",
+    "StringEqualsIgnoreCase", "StringEqualsIgnoreCaseIfExists",
+    "ForAnyValue:StringEquals", "ForAllValues:StringLike",
+    "ForAnyValue:StringEqualsIfExists", "ForAllValues:StringEqualsIgnoreCase",
+])
 def test_region_deny_warns_when_operator_denies_allowed_regions(operator):
-    policy = json.loads((SCP / "bad-region-operator.json").read_text())
+    policy = json.loads((SCP / "bad-region-operator.json").read_text(encoding="utf-8"))
     statement = policy["Statement"][0]
     statement["Condition"] = {operator: {"aws:RequestedRegion": ["eu-west-1"]}}
     found = mod.lint_policy(policy)
     assert any(i["id"] == "SCP-REGION-OPERATOR" and i["level"] == "warning" for i in found)
+    assert any(operator in i["message"] for i in found if i["id"] == "SCP-REGION-OPERATOR")
     assert "SCP-REGION-OPERATOR" in ids(SCP / "bad-region-operator.json")
 
 
 @pytest.mark.parametrize("effect,operator,key", [
     ("Deny", "StringNotEquals", "aws:RequestedRegion"),
     ("Deny", "StringNotLike", "aws:RequestedRegion"),
+    ("Deny", "StringNotEqualsIfExists", "aws:RequestedRegion"),
+    ("Deny", "StringNotLikeIfExists", "aws:RequestedRegion"),
+    ("Deny", "ForAnyValue:StringNotEquals", "aws:RequestedRegion"),
+    ("Deny", "ForAllValues:StringNotLikeIfExists", "aws:RequestedRegion"),
     ("Allow", "StringEquals", "aws:RequestedRegion"),
+    ("Allow", "StringEqualsIfExists", "aws:RequestedRegion"),
     ("Deny", "StringEquals", "aws:PrincipalArn"),
+    ("Deny", "ForAnyValue:StringEqualsIfExists", "aws:PrincipalArn"),
 ])
 def test_other_condition_operators_do_not_trigger_region_warning(effect, operator, key):
     policy = {"Version": "2012-10-17", "Statement": [{
@@ -29,6 +41,20 @@ def test_other_condition_operators_do_not_trigger_region_warning(effect, operato
         "Condition": {operator: {key: "eu-west-1"}},
     }]}
     assert not any(i["id"] == "SCP-REGION-OPERATOR" for i in mod.lint_policy(policy))
+
+
+@pytest.mark.parametrize("operator,expected_code", [
+    ("StringEqualsIfExists", 1),
+    ("StringNotEqualsIfExists", 0),
+])
+def test_region_operator_variant_cli_exit_status(write, operator, expected_code):
+    policy = json.loads((SCP / "bad-region-operator.json").read_text(encoding="utf-8"))
+    condition = policy["Statement"][0]["Condition"]
+    condition[operator] = condition.pop("StringEquals")
+    file = write("region-variant.json", json.dumps(policy))
+    rc, out = run_json(mod, [str(file), "--json", "--fail-on", "warning"])
+    assert rc == expected_code
+    assert [i["id"] for i in out[0]["issues"]] == (["SCP-REGION-OPERATOR"] if expected_code else [])
 
 
 def ids(path):

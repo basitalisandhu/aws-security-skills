@@ -133,7 +133,7 @@ def test_review_account_filter_and_factor(write):
 
 
 def test_review_forecast_for_a_partial_month(write):
-    data = json.loads(COST.read_text())
+    data = json.loads(COST.read_text(encoding="utf-8"))
     data["ResultsByTime"] = data["ResultsByTime"][:12]
     part = write("part.json", json.dumps(data))
     budget = write("b.json", json.dumps({**mod.load_spec(BUDGET), "monthly_limit": 400}))
@@ -148,7 +148,7 @@ def test_review_bad_input_and_pagination_warning(write):
     monthly = {"ResultsByTime": [{"TimePeriod": {"Start": "2026-09", "End": "2026-10"}, "Groups": []}]}
     rc, _, _ = run_main(mod, ["review", "--cost-explorer", str(write("m.json", json.dumps(monthly)))])
     assert rc == 2
-    data = json.loads(COST.read_text())
+    data = json.loads(COST.read_text(encoding="utf-8"))
     data["NextPageToken"] = "example-token"
     rc, out, _ = run_main(mod, ["review", "--cost-explorer", str(write("p.json", json.dumps(data))), "--fail-on", "high"])
     assert rc == 1 and "NextPageToken" in out

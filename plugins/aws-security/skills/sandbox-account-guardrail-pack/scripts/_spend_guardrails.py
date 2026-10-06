@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Vendored copy of skills/aws-spend-guardrails/scripts/spend_guardrails.py so this skill works when it is installed on its own.
+# Do not edit here: change the origin and copy it again; tests/test_vendored_helpers.py fails on drift.
 """Generate AWS spend guardrails from a budget spec, or review exported Cost Explorer data against it.
 
   spend_guardrails.py --budget budget.yaml [--out DIR] [--json]

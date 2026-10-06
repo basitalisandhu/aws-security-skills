@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# Vendored copy of skills/scp-guardrails/scripts/scp_lint.py so this skill works when it is installed on its own.
+# Do not edit here: change the origin and copy it again; tests/test_vendored_helpers.py fails on drift.
 """Lint service control policies (SCPs) for common mistakes before they are attached.
 
 Accepts SCP documents as JSON files, or the output of `aws organizations describe-policy` (the Content string is
