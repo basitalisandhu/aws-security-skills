@@ -4,6 +4,11 @@ All notable changes to this project are documented here. The format follows Keep
 
 ## [Unreleased]
 
+### Added
+
+- Warn when a region Deny uses a positive string comparison on aws:RequestedRegion,
+  including IfExists and set-operator variants, with offline regression tests.
+
 ## [0.3.0] - 2026-10-05
 
 ### Added
