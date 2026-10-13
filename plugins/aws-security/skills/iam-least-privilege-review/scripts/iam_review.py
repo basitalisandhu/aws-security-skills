@@ -41,6 +41,11 @@ SEVERITIES = ["critical", "high", "medium", "low", "info"]
 RANK = {s: i for i, s in enumerate(SEVERITIES)}
 READ_PREFIXES = ("get", "list", "describe", "head", "view", "search", "query", "scan", "select", "lookup", "batchget")
 
+# Data-reading actions that should be scoped to specific resources.
+SCOPED_READ_ACTIONS = {
+    "secretsmanager:getsecretvalue",
+    "s3:getobject",
+}
 # Privilege-escalation paths in IAM, from published research (Rhino Security Labs, "AWS IAM Privilege Escalation
 # Methods", 2018, and later public write-ups). Each entry is a set of actions that together let a principal gain
 # permissions it was not granted.
@@ -263,7 +268,12 @@ def suggest(doc: dict) -> dict:
         if "*" not in resources:
             out.append(st)
             continue
-        reads = sorted(a for a in actions if a != "*" and is_read(a))
+        reads = sorted(
+            a for a in actions
+            if a != "*"
+            and is_read(a)
+            and a.lower() not in SCOPED_READ_ACTIONS
+        )
         writes = [a for a in actions if a not in reads]
         if reads:
             out.append({"Sid": f"{sid}Read", "Effect": "Allow", "Action": reads, "Resource": "*",
