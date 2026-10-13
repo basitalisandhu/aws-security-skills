@@ -1,3 +1,4 @@
+
 from conftest import FIXTURES, load_script, run_json, run_main
 
 mod = load_script("iam-least-privilege-review", "iam_review.py")
@@ -99,6 +100,26 @@ def test_suggested_policy_scopes_sensitive_data_reads():
     assert statements[0]["Action"] == ["secretsmanager:GetSecretValue"]
     assert statements[0]["Resource"] == (
         "arn:aws:secretsmanager:<region>:<account-id>:secret:<secret-name>-*"
+    )
+
+
+def test_suggested_policy_scopes_s3_object_reads():
+    policy = {
+        "Version": "2012-10-17",
+        "Statement": [{
+            "Sid": "ReadObject",
+            "Effect": "Allow",
+            "Action": "s3:GetObject",
+            "Resource": "*",
+        }],
+    }
+
+    statements = mod.suggest(policy)["Statement"]
+
+    assert len(statements) == 1
+    assert statements[0]["Action"] == ["s3:GetObject"]
+    assert statements[0]["Resource"] == (
+        "arn:aws:s3:::<bucket-name>/<object-key>"
     )
 
 
