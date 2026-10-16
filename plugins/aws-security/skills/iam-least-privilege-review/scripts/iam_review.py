@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python3
 """Review IAM policy documents for over-broad grants and privilege-escalation paths, offline.
 
