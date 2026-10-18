@@ -4,6 +4,28 @@ All notable changes to this project are documented here. The format follows Keep
 
 ## [Unreleased]
 
+## [0.4.1] - 2026-10-18
+
+### Fixed
+
+- SCP size and attachment quotas checked against the AWS Organizations quotas page: an SCP document can be 10,240 characters (5120 is the resource control policy limit) and 10 SCPs attach directly to one root, OU or account. `scp_builder.py`, `scp_lint.py`, `spend_guardrails.py`, `sandbox_pack.py`, `agent_access.py` and their vendored copies use 10,240 and 10; the docs and the catalog say so with the source.
+- `sandbox_pack.py`, `spend_guardrails.py` and `agent_access.py` wrote SCP files indented although they measured the compact form. The AWS CLI and SDKs upload whitespace as written, so the files on disk could be larger than the reported size; SCP files are now written compact (IAM documents stay indented, since IAM does not count whitespace). `scp_lint.py` adds `SCP-SIZE-AS-WRITTEN` for a file that is over the limit only because of whitespace.
+- `scp_lint.py`: `SCP-ALLOW-NOTACTION` is a warning, not an error (SCPs accept NotAction in Allow statements), and the new `SCP-ALLOW-RESOURCE` error flags an Allow statement whose Resource is not "*". The builder manifest passed by the documented `./scps/*.json` glob is refused with a hint; the SKILL.md command is now `./scps/scp-*.json`.
+- `securityhub:DisableSecurityHubV2` (in the Service Authorization Reference and the AWS sample SCP) added to the Security Hub guardrail, the agent permissions boundary and the agent session audit's logging-tamper list.
+- `agent_session_audit.py` reports CloudTrail events as IAM actions: Lambda event names lose their API version suffix, S3 ListBuckets is `s3:ListAllMyBuckets`, ListObjects, ListObjectsV2 and HeadBucket are `s3:ListBucket`, HeadObject is `s3:GetObject`, and event source `monitoring` is `cloudwatch`. Before, real exports flagged allowed calls and proposed removing permissions that were used.
+- `landing-zone-blast-radius` recommended `aws:SourceAccount` for a pipeline role's deployment role; that key is only present for calls by AWS service principals, so it now says `aws:PrincipalArn`.
+- `audit_account.py` exits 2 and names the file when a saved file is not the expected CLI output (a JSON list, an empty credential report, or no `SummaryMap`, `SecurityGroups` and so on) instead of counting its checks as passed or raising a traceback.
+- `agent_session_audit.py` says "empty file" for an empty export, rejects lists that hold non-records, names the filter and record count when nothing matches, and refuses an empty or malformed allow list instead of flagging every call.
+- `ir_runbook.py triage` rejects Findings entries without a Type (a list of numbers used to count as findings with exit 0) and names the file in errors; `agent_access.py review` names the file in JSON errors and exits 2 on a `--get-role` file of the wrong shape (it raised a traceback with exit 1); `spend_guardrails.py review` and `triage_findings.py` name the file in errors, and `--top` below 1 is a usage error.
+- `scp_builder.py` rejects string booleans (`deny_root_user: "no"` used to switch the guardrail on), region codes and role names of the wrong form, and `max_policy_chars` outside 1 to 10,240.
+- `blast_radius.py` rejects unknown keys (a typo such as `depend_on` was ignored), an `internet_facing` value other than true or false, an `email_domain` that is not a domain, and a workload that depends on itself; `depends_on` may be a single name.
+
+### Changed
+
+- `scp-guardrails` and `aws-account-audit` descriptions rewritten for recall on the shared trigger prompts (lexical eval recall 0.60 to 1.00 and 0.80 to 1.00, precision unchanged at 1.00).
+- The plugin README has one exit code table for every script and real output samples from the fixtures, kept honest by `tests/test_readme_samples.py`; a synthetic CloudTrail fixture for `aws-agent-session-audit` is committed under `tests/fixtures/agent-session/`.
+- Version 0.4.1 in `pyproject.toml`, `plugin.json`, `marketplace.json`, the dispatcher and the README container examples.
+
 ## [0.4.0] - 2026-10-09
 
 ### Added

@@ -6,7 +6,7 @@ import gzip
 import json
 
 import pytest
-from conftest import load_script, run_json, run_main
+from conftest import FIXTURES, load_script, run_json, run_main
 
 mod = load_script("aws-agent-session-audit", "agent_session_audit.py")
 ACCT = "123456789012"
@@ -82,7 +82,7 @@ def test_remove_permissions_from_granted_policy(trail, tmp_path):
     policy = {
         "Version": "2012-10-17",
         "Statement": [
-            {"Effect": "Allow", "Action": ["s3:ListBuckets", "dynamodb:Scan", "sqs:SendMessage"], "Resource": "*"},
+            {"Effect": "Allow", "Action": ["s3:ListAllMyBuckets", "dynamodb:Scan", "sqs:SendMessage"], "Resource": "*"},
             {"Effect": "Allow", "Action": "lambda:*", "Resource": "*"},
             {"Effect": "Deny", "Action": "iam:*", "Resource": "*"},
         ],
@@ -123,7 +123,7 @@ def test_lookup_events_shape_and_gzip_folder(tmp_path):
     (folder / "log.json.gz").write_bytes(gzip.compress(json.dumps({"Records": [rec("s3", "ListBuckets", 3, read_only=True)]}).encode("utf-8")))
     rc, rep = run_json(mod, [str(folder), "--session-name", SESSION, "--json"])
     assert rc == 0 and rep["findings"] == []
-    assert rep["actions"] == {"ec2:DescribeInstances": 1, "s3:ListBuckets": 1, "sts:GetCallerIdentity": 1}
+    assert rep["actions"] == {"ec2:DescribeInstances": 1, "s3:ListAllMyBuckets": 1, "sts:GetCallerIdentity": 1}
     assert rep["services"]["sts"]["reads"] == 1
 
 
@@ -182,3 +182,89 @@ def test_help_lists_checks():
     assert rc == 0
     for word in ("AGENT-LOGGING-TAMPER", "AGENT-OUTSIDE-ALLOWLIST", "Remove these permissions", "Exit codes", "--json", "--redact"):
         assert word in out
+
+
+SESSION_FIXTURES = FIXTURES / "agent-session"
+
+
+def test_documented_command_on_the_committed_fixture():
+    rc, out, _ = run_main(mod, [str(SESSION_FIXTURES), "--session-name", SESSION, "--allow-list",
+                                str(SESSION_FIXTURES / "allow-list.txt"), "--regions", "ap-southeast-2"])
+    assert rc == 1
+    assert "| critical | AGENT-LOGGING-TAMPER |" in out and "7 events matched (of 8 read)" in out
+
+
+@pytest.mark.parametrize("content", ["", "   \n"])
+def test_empty_trail_file_says_empty_not_no_match(tmp_path, content):
+    p = tmp_path / "events.json"
+    p.write_text(content, encoding="utf-8")
+    rc, _, err = run_main(mod, [str(p), "--session-name", SESSION])
+    assert rc == 2 and "empty file" in err and "match" not in err
+
+
+def test_list_of_non_records_is_bad_input(tmp_path):
+    p = tmp_path / "list.json"
+    p.write_text("[1, 2, 3]", encoding="utf-8")
+    rc, _, err = run_main(mod, [str(p), "--session-name", SESSION])
+    assert rc == 2 and "only JSON objects" in err
+
+
+def test_no_match_names_the_filter_and_the_record_count(trail):
+    rc, _, err = run_main(mod, [str(trail), "--session-name", "nobody"])
+    assert rc == 2 and "none of the 8 records match --session-name nobody" in err
+
+
+@pytest.mark.parametrize("content,needle", [
+    ("", "allow list is empty"),
+    ("a,b\n1,2\n", "not IAM actions"),
+    (json.dumps(["s3 GetObject"]), "not IAM actions"),
+])
+def test_empty_or_malformed_allow_list_is_bad_input(trail, tmp_path, content, needle):
+    # An empty or CSV allow list used to be accepted and flagged every call as outside the allow list.
+    allow = tmp_path / "allow"
+    allow.write_text(content, encoding="utf-8")
+    rc, _, err = run_main(mod, [str(trail), "--session-name", SESSION, "--allow-list", str(allow)])
+    assert rc == 2 and needle in err
+
+
+def test_text_line_allow_list_still_works(trail, tmp_path):
+    allow = tmp_path / "allow.txt"
+    allow.write_text("# agreed for the task\ns3:List*\ns3:GetObject\n", encoding="utf-8")
+    rc, rep = run_json(mod, [str(trail), "--session-name", SESSION, "--allow-list", str(allow), "--json"])
+    outside = next(f for f in rep["findings"] if f["id"] == "AGENT-OUTSIDE-ALLOWLIST")
+    assert "s3:GetObject" not in outside["actions"] and "s3:DeleteBucket" in outside["actions"]
+
+
+def test_cloudtrail_event_names_are_reported_as_iam_actions(tmp_path):
+    # Checked against the AWS documentation: the S3 ListBuckets call needs s3:ListAllMyBuckets, ListObjectsV2 and
+    # HeadBucket need s3:ListBucket, HeadObject needs s3:GetObject, Lambda event names carry an API version suffix,
+    # and CloudWatch records the event source monitoring.amazonaws.com.
+    records = [
+        rec("s3", "ListBuckets", 1, read_only=True),
+        rec("s3", "ListObjectsV2", 2, read_only=True),
+        rec("s3", "HeadBucket", 3, read_only=True),
+        rec("s3", "HeadObject", 4, read_only=True),
+        rec("lambda", "UpdateFunctionCode20150331v2", 5),
+        rec("lambda", "CreateFunction20150331", 6),
+        rec("monitoring", "GetMetricData", 7, read_only=True),
+    ]
+    p = tmp_path / "t.json"
+    p.write_text(json.dumps({"Records": records}), encoding="utf-8")
+    granted = tmp_path / "granted.json"
+    granted.write_text(json.dumps({"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "Resource": "*", "Action": [
+        "s3:ListAllMyBuckets", "s3:ListBucket", "s3:GetObject", "lambda:UpdateFunctionCode", "lambda:CreateFunction",
+        "cloudwatch:GetMetricData"]}]}), encoding="utf-8")
+    allow = tmp_path / "allow.txt"
+    allow.write_text("s3:ListAllMyBuckets\ns3:ListBucket\ns3:GetObject\nlambda:*\ncloudwatch:GetMetricData\n", encoding="utf-8")
+    rc, rep = run_json(mod, [str(p), "--session-name", SESSION, "--granted", str(granted), "--allow-list", str(allow), "--json"])
+    assert rep["actions"] == {"cloudwatch:GetMetricData": 1, "lambda:CreateFunction": 1, "lambda:UpdateFunctionCode": 1,
+                              "s3:GetObject": 1, "s3:ListAllMyBuckets": 1, "s3:ListBucket": 2}
+    assert rep["remove_permissions"]["remove"] == []
+    assert "AGENT-OUTSIDE-ALLOWLIST" not in ids(rep)
+
+
+def test_security_hub_v2_disable_is_logging_tamper(tmp_path):
+    p = tmp_path / "t.json"
+    p.write_text(json.dumps({"Records": [rec("securityhub", "DisableSecurityHubV2", 1)]}), encoding="utf-8")
+    rc, rep = run_json(mod, [str(p), "--json"])
+    assert rc == 1 and ids(rep)[0] == "AGENT-LOGGING-TAMPER"

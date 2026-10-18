@@ -117,3 +117,39 @@ def test_bad_input_exit_2(write):
     assert rc == 2 and "invalid JSON" in err
     rc, _, _ = run_main(mod, [str(write("y.json", '{"Policy": {"Content": "not json"}}'))])
     assert rc == 2
+
+
+def test_builder_manifest_is_rejected_with_a_hint(tmp_path):
+    # The documented glob used to pick up manifest.json and report it as a broken SCP.
+    p = tmp_path / "manifest.json"
+    p.write_text(json.dumps({"limit": 5120, "documents": [{"file": "scp-01.json"}], "warnings": [], "lint": []}), encoding="utf-8")
+    rc, out, err = run_main(mod, [str(p)])
+    assert rc == 2 and out == ""
+    assert "manifest" in err and "scp-*.json" in err
+
+
+def test_pretty_file_over_the_limit_as_written_is_a_warning(tmp_path):
+    doc = {"Version": "2012-10-17", "Statement": [{"Sid": "D", "Effect": "Deny", "Action": "ec2:RunInstances", "Resource": "*"}]}
+    p = tmp_path / "scp.json"
+    p.write_text(json.dumps(doc, indent=8), encoding="utf-8")
+    compact_size = len(mod.compact(doc))
+    rc, out = run_json(mod, [str(p), "--limit", str(compact_size + 5), "--fail-on", "warning", "--json"])
+    assert rc == 1 and [i["id"] for i in out[0]["issues"]] == ["SCP-SIZE-AS-WRITTEN"]
+    p.write_text(mod.compact(doc), encoding="utf-8")
+    rc, out = run_json(mod, [str(p), "--limit", str(compact_size + 5), "--fail-on", "warning", "--json"])
+    assert rc == 0 and out[0]["issues"] == []
+
+
+def test_allow_with_notaction_is_valid_syntax_so_only_a_warning():
+    # SCPs accept NotAction in Allow statements (Organizations SCP syntax page, checked 2026-10-18).
+    doc = {"Version": "2012-10-17", "Statement": [{"Effect": "Allow", "NotAction": "iam:*", "Resource": "*"}]}
+    found = {i["id"]: i["level"] for i in mod.lint_policy(doc)}
+    assert found == {"SCP-ALLOW-NOTACTION": "warning"}
+
+
+def test_allow_with_a_specific_resource_is_an_error():
+    # "In statements where the Effect element has a value of Allow, you can specify only * in the Resource element."
+    doc = {"Version": "2012-10-17", "Statement": [
+        {"Effect": "Allow", "Action": "s3:*", "Resource": "arn:aws:s3:::example-bucket"}]}
+    found = {i["id"]: i["level"] for i in mod.lint_policy(doc, strategy="allow-list")}
+    assert found == {"SCP-ALLOW-RESOURCE": "error"}

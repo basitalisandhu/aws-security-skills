@@ -133,3 +133,18 @@ def test_triage_fail_on_and_bad_input(write):
     assert rc == 2 and "error:" in err
     rc, out, _ = run_main(mod, ["triage", "--guardduty", str(write("empty.json", '{"Findings": []}'))])
     assert rc == 0 and "no finding maps" in out
+
+
+@pytest.mark.parametrize("content,needle", [
+    ("", "Expecting value"),
+    ("a,b\n1,2\n", "Expecting value"),
+    ("[1, 2, 3]", "GuardDuty finding object with a Type"),
+    ('{"Findings": [{"Id": "x"}]}', "GuardDuty finding object with a Type"),
+])
+def test_triage_bad_input_names_the_file_and_exits_2(tmp_path, content, needle):
+    # A list of numbers used to be counted as "3 finding(s)" with exit 0.
+    p = tmp_path / "gd.json"
+    p.write_text(content, encoding="utf-8")
+    rc, out, err = run_main(mod, ["triage", "--guardduty", str(p)])
+    assert rc == 2 and out == ""
+    assert str(p) in err and needle in err
