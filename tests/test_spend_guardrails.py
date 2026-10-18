@@ -152,3 +152,27 @@ def test_review_bad_input_and_pagination_warning(write):
     data["NextPageToken"] = "example-token"
     rc, out, _ = run_main(mod, ["review", "--cost-explorer", str(write("p.json", json.dumps(data))), "--fail-on", "high"])
     assert rc == 1 and "NextPageToken" in out
+
+
+def test_review_csv_input_names_the_file_and_the_fix(tmp_path):
+    p = tmp_path / "cost.json"
+    p.write_text("date,amount\n2026-09-01,3\n", encoding="utf-8")
+    rc, out, err = run_main(mod, ["review", "--cost-explorer", str(p)])
+    assert rc == 2 and out == ""
+    assert str(p) in err and "--output json" in err
+
+
+def test_review_empty_file_names_the_file(tmp_path):
+    p = tmp_path / "empty.json"
+    p.write_text("", encoding="utf-8")
+    rc, _, err = run_main(mod, ["review", "--cost-explorer", str(p)])
+    assert rc == 2 and str(p) in err
+
+
+def test_written_spend_scps_are_compact(tmp_path):
+    rc, _, _ = run_main(mod, ["--budget", str(BUDGET), "--out", str(tmp_path)])
+    assert rc == 0
+    for p in tmp_path.glob("spend-scp-0*.json"):
+        text = p.read_text(encoding="utf-8").strip()
+        assert text == lint.compact(json.loads(text))
+    assert "\n  " in (tmp_path / "budget-cost.json").read_text(encoding="utf-8")  # non-SCP files stay readable

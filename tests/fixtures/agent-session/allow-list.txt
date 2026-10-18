@@ -1,0 +1,3 @@
+s3:List*
+s3:GetObject
+lambda:UpdateFunctionCode

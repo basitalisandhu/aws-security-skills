@@ -29,7 +29,7 @@ def test_pack_writes_every_file(tmp_path):
         "README-sandbox-users.md", "baseline-checklist.md", "auto-expiry/design.md", "auto-expiry/scheduler-role-policy.json",
         "auto-expiry/sweeper-role-policy.json", "auto-expiry/ttl_sweeper.py", "budget/anomaly-monitor.json",
         "budget/anomaly-subscription.json", "budget/budget-cost.json", "budget/commands.md", "budget/notifications-cost.json",
-        "scps/manifest.json", "scps/scp-01.json", "scps/scp-02.json"])
+        "scps/manifest.json", "scps/scp-01.json"])
 
 
 def test_every_scp_is_under_the_limit_and_passes_scp_lint(tmp_path):
@@ -37,7 +37,7 @@ def test_every_scp_is_under_the_limit_and_passes_scp_lint(tmp_path):
     docs = scps(result)
     assert docs
     for doc in docs:
-        assert len(lint.compact(doc)) <= 5120
+        assert len(lint.compact(doc)) <= 10240  # the AWS Organizations SCP quota
         assert lint.lint_policy(doc) == []
     # The written files lint clean with the scp_lint command line too.
     run_main(mod, ["--spec", str(SPEC), "--out", str(tmp_path)])
@@ -149,4 +149,13 @@ def test_json_output():
     rc, out = run_json(mod, ["--spec", str(SPEC), "--json"])
     assert rc == 0
     assert out["lint_errors"] == [] and out["manifest"]["warnings"] == []
-    assert [d["file"] for d in out["manifest"]["documents"]] == ["scp-01.json", "scp-02.json"]
+    assert [d["file"] for d in out["manifest"]["documents"]] == ["scp-01.json"]
+
+
+def test_written_scps_are_compact_so_a_cli_upload_matches_the_measured_size(tmp_path):
+    # The AWS CLI keeps whitespace when it uploads a policy, so an indented file is larger than the size reported.
+    run_main(mod, ["--spec", str(SPEC), "--out", str(tmp_path)])
+    manifest = json.loads((tmp_path / "scps" / "manifest.json").read_text(encoding="utf-8"))
+    for meta in manifest["documents"]:
+        text = (tmp_path / "scps" / meta["file"]).read_text(encoding="utf-8").strip()
+        assert len(text) == meta["chars_compact"] <= manifest["limit"]

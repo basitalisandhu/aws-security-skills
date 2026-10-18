@@ -33,8 +33,8 @@
 <text x="24" y="588" xml:space="preserve"><tspan fill="#7D8BA1">[exit 1]</tspan></text>
 <text x="24" y="628" xml:space="preserve"><tspan fill="#7FD1AE">$ aws-security scp-lint tests/fixtures/scp/bad-notaction-and-principal.json</tspan></text>
 <text x="24" y="648" xml:space="preserve"><tspan fill="#7FD1AE">tests/fixtures/scp/bad-region-action-star.json</tspan></text>
-<text x="24" y="668" xml:space="preserve">tests/fixtures/scp/bad-notaction-and-principal.json: 408/5120 chars, 5 issue(s)</text>
-<text x="24" y="688" xml:space="preserve">  <tspan fill="#FF7B72">error</tspan>   SCP-ALLOW-NOTACTION      AllowMostThings                    Allow with NotAction allows</text>
+<text x="24" y="668" xml:space="preserve">tests/fixtures/scp/bad-notaction-and-principal.json: 408/10240 chars, 5 issue(s)</text>
+<text x="24" y="688" xml:space="preserve">  <tspan fill="#E3B341">warning</tspan> SCP-ALLOW-NOTACTION      AllowMostThings                    Allow with NotAction allows</text>
 <text x="24" y="708" xml:space="preserve">every action not listed; list the allowed actions instead</text>
 <text x="24" y="728" xml:space="preserve">  <tspan fill="#E3B341">warning</tspan> SCP-DENY-NOTACTION-BARE  DenyEverythingElse                 Deny with NotAction and no</text>
 <text x="24" y="748" xml:space="preserve">Condition denies every action not listed, in every region</text>
@@ -44,7 +44,7 @@
 <text x="24" y="828" xml:space="preserve">more than once</text>
 <text x="24" y="848" xml:space="preserve">  <tspan fill="#FF7B72">error</tspan>   SCP-DENY-ALL             DenyForOneRole                     Deny * on * without a</text>
 <text x="24" y="868" xml:space="preserve">Condition blocks every action in the attached accounts</text>
-<text x="24" y="888" xml:space="preserve">tests/fixtures/scp/bad-region-action-star.json: 179/5120 chars, 2 issue(s)</text>
+<text x="24" y="888" xml:space="preserve">tests/fixtures/scp/bad-region-action-star.json: 179/10240 chars, 2 issue(s)</text>
 <text x="24" y="908" xml:space="preserve">  <tspan fill="#FF7B72">error</tspan>   SCP-REGION-BLOCKS-GLOBAL DenyOtherRegions                   region deny uses Action *:</text>
 <text x="24" y="928" xml:space="preserve">global services (IAM, STS, Organizations, Route 53, CloudFront, Support) are served from us-east-1</text>
 <text x="24" y="948" xml:space="preserve">and will be denied; use NotAction with the global service list</text>

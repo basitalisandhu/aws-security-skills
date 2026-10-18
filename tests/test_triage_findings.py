@@ -75,3 +75,15 @@ def test_bad_inputs_exit_2(write):
     assert rc == 2 and "unknown config keys" in err
     rc, _, _ = run_main(mod, [SH, "--config", str(write("d.yaml", "owners:\n  - owner: x\n"))])
     assert rc == 2
+
+
+def test_non_object_entries_name_the_file(tmp_path):
+    p = tmp_path / "list.json"
+    p.write_text("[1, 2, 3]", encoding="utf-8")
+    rc, _, err = run_main(mod, [str(p)])
+    assert rc == 2 and str(p) in err and "3 of 3 entries" in err
+
+
+def test_top_below_one_is_a_usage_error():
+    rc, _, err = run_main(mod, [SH, "--top", "-3"])
+    assert rc == 2 and "--top" in err

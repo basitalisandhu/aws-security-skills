@@ -180,3 +180,32 @@ def test_fail_on_threshold_and_text_output():
     assert rc == 1 and "AGENT-TRUST-OIDC-NO-SUB" in out
     rc, out, _ = run_main(mod, ["plan", "--spec", str(SPEC)])
     assert rc == 0 and "must review every generated policy" in out
+
+
+def test_review_csv_export_names_the_file(tmp_path):
+    p = tmp_path / "auth.json"
+    p.write_text("a,b\n1,2\n", encoding="utf-8")
+    rc, _, err = run_main(mod, ["review", "--role-json", str(p), "--role-name", "agent-claude-code"])
+    assert rc == 2 and str(p) in err and "not JSON" in err
+
+
+def test_review_get_role_of_the_wrong_shape_is_bad_input_not_a_traceback(tmp_path):
+    # A JSON list passed as --get-role used to raise AttributeError and exit 1, as if findings were found.
+    p = tmp_path / "role.json"
+    p.write_text("[1, 2]", encoding="utf-8")
+    rc, _, err = run_main(mod, ["review", "--role-json", str(AUTH), "--role-name", "agent-claude-code", "--get-role", str(p)])
+    assert rc == 2 and "get-role output" in err
+
+
+def test_written_sandbox_scp_is_compact_and_iam_documents_stay_indented(tmp_path):
+    rc, _, _ = run_main(mod, ["plan", "--spec", str(SPEC), "--out", str(tmp_path)])
+    assert rc in (0, 1)
+    text = (tmp_path / "sandbox-scp.json").read_text(encoding="utf-8").strip()
+    assert text == lint.compact(json.loads(text))
+    assert "\n  " in (tmp_path / "permission-policy.json").read_text(encoding="utf-8")
+
+
+def test_boundary_denies_turning_off_security_hub_v2():
+    _, plan = run_json(mod, ["plan", "--spec", str(SPEC), "--json"])
+    boundary = json.dumps(plan["files"]["permissions-boundary.json"])
+    assert "securityhub:DisableSecurityHubV2" in boundary

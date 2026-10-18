@@ -74,7 +74,7 @@ from _miniyaml import load as yaml_load  # noqa: E402
 
 LEVELS = ["critical", "high", "medium", "low", "info"]
 MANAGED_POLICY_LIMIT = 6144
-SCP_LIMIT = 5120
+SCP_LIMIT = 10240  # AWS Organizations quota for an SCP document
 ROLE_CHAIN_MAX_SECONDS = 3600
 
 # Metadata-only reads per service. Deliberately explicit: no Get* wildcards, which would include object, secret and
@@ -120,7 +120,8 @@ TAMPERING = ["cloudtrail:DeleteEventDataStore", "cloudtrail:DeleteTrail", "cloud
              "guardduty:DisassociateFromAdministratorAccount", "guardduty:DisassociateFromMasterAccount",
              "guardduty:DisassociateMembers", "guardduty:StopMonitoringMembers", "guardduty:UpdateDetector",
              "guardduty:UpdateFilter", "guardduty:UpdateIPSet", "securityhub:BatchDisableStandards",
-             "securityhub:DisableSecurityHub", "securityhub:DisassociateFromAdministratorAccount"]
+             "securityhub:DisableSecurityHub", "securityhub:DisableSecurityHubV2",
+             "securityhub:DisassociateFromAdministratorAccount"]
 BILLING = ["aws-marketplace:Subscribe", "aws-portal:*", "billing:*", "budgets:CreateBudgetAction", "budgets:DeleteBudgetAction",
            "budgets:ExecuteBudgetAction", "budgets:ModifyBudget", "budgets:UpdateBudgetAction", "ce:Create*", "ce:Delete*",
            "ce:Update*", "cur:*", "ec2:PurchaseHostReservation", "ec2:PurchaseReservedInstancesOffering", "invoicing:*",
@@ -758,8 +759,18 @@ def review_export(data: dict, role_name: str | None, get_role: dict | None) -> d
 def write_plan(result: dict, out: Path) -> None:
     out.mkdir(parents=True, exist_ok=True)
     for name, doc in result["files"].items():
-        (out / name).write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+        # Organizations keeps whitespace when an SCP is uploaded with the CLI, so the SCP is written compact (as measured);
+        # IAM does not count whitespace, so the IAM documents stay indented for review.
+        text = json.dumps(doc, separators=(",", ":")) if name == "sandbox-scp.json" else json.dumps(doc, indent=2)
+        (out / name).write_text(text + "\n", encoding="utf-8")
     (out / "commands.md").write_text(result["commands_md"], encoding="utf-8")
+
+
+def read_json(path: str):
+    try:
+        return json.loads(Path(path).read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"{path}: not JSON: {exc}") from exc
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -802,8 +813,10 @@ def main(argv: list[str] | None = None) -> int:
         return 1 if any(f["severity"] != "info" for f in result["self_review"]) else 0
 
     try:
-        data = json.loads(Path(args.role_json).read_text(encoding="utf-8"))
-        get_role = json.loads(Path(args.get_role).read_text(encoding="utf-8")) if args.get_role else None
+        data = read_json(args.role_json)
+        get_role = read_json(args.get_role) if args.get_role else None
+        if get_role is not None and not (isinstance(get_role, dict) and isinstance(get_role.get("Role"), dict)):
+            raise ValueError(f"{args.get_role}: expected aws iam get-role output (an object with Role)")
         report = review_export(data, args.role_name, get_role)
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         print(f"error: {exc}", file=sys.stderr)
