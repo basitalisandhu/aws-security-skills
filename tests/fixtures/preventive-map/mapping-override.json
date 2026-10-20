@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "controls": {
+    "S3.1": {
+      "title": "Custom S3.1 entry replaces the bundled one",
+      "prowler": [],
+      "options": [
+        {
+          "kind": "iac-check",
+          "name": "Custom IaC rule",
+          "prevents": "Custom rule used to test overrides.",
+          "snippet_format": "text",
+          "snippet": "fail when the account block is missing",
+          "caveats": [],
+          "doc": "https://example.com/internal-standard"
+        }
+      ]
+    },
+    "ECR.1": {
+      "title": "ECR private repositories should have image scanning configured (custom)",
+      "prowler": [],
+      "options": [
+        {
+          "kind": "iac-check",
+          "name": "Scan on push in IaC",
+          "prevents": "Repositories are created with scan_on_push on.",
+          "snippet_format": "hcl",
+          "snippet": "image_scanning_configuration {\n  scan_on_push = true\n}",
+          "caveats": [],
+          "doc": "https://example.com/internal-standard"
+        }
+      ]
+    }
+  }
+}

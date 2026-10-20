@@ -34,6 +34,6 @@ def test_sampled_output_matches_the_script(script, args, lines):
     assert out[:len(lines)] == lines or all(ln in out for ln in lines), script
 
 
-def test_readme_has_an_exit_code_table_and_five_sampled_commands():
+def test_readme_has_an_exit_code_table_and_six_sampled_commands():
     assert "## Exit codes" in README and "| 2 | Bad input or usage" in README
-    assert len(list(samples())) == 5
+    assert len(list(samples())) == 6

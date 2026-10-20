@@ -15,7 +15,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-__version__ = "0.4.2"
+__version__ = "0.5.0"
 
 PROG = "aws-security"
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,6 +34,7 @@ COMMANDS: dict[str, tuple[str, str, str]] = {
     "spend": ("aws-spend-guardrails", "spend_guardrails.py", "Budgets, anomaly monitor and spend SCPs; review cost exports"),
     "sandbox": ("sandbox-account-guardrail-pack", "sandbox_pack.py", "Guardrail pack for a sandbox OU (SCPs, baseline, expiry)"),
     "agent-audit": ("aws-agent-session-audit", "agent_session_audit.py", "What an agent role session did, from CloudTrail exports"),
+    "preventive-map": ("preventive-control-mapper", "preventive_map.py", "Preventive controls (SCP, setting, IaC) for failing Security Hub controls"),
 }
 
 

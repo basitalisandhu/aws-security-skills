@@ -5,3 +5,4 @@
 !pyproject.toml
 !scripts/cli.py
 !plugins/*/skills/*/scripts/*.py
+!plugins/*/skills/*/references/preventive-map.json

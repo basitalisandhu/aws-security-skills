@@ -1,0 +1,6 @@
+control_id,account_id,region,resource
+S3.1,111122223333,ap-southeast-2,AWS::::Account:111122223333
+EC2.9,111122223333,ap-southeast-2,i-0aaaabbbbccccdddd
+Lambda.1,111122223333,ap-southeast-2,example-function
+IAM.9,444455556666,us-east-1,AWS::::Account:444455556666
+EC2.13,111122223333,ap-southeast-2,sg-0aaaabbbbccccdddd
