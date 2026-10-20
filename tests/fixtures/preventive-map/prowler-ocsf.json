@@ -1,0 +1,296 @@
+[
+  {
+    "message": "Example result for s3_account_level_public_access_blocks",
+    "activity_id": 1,
+    "activity_name": "Create",
+    "category_uid": 2,
+    "category_name": "Findings",
+    "class_uid": 2004,
+    "class_name": "Detection Finding",
+    "finding_info": {
+      "uid": "prowler-aws-s3_account_level_public_access_blocks-111122223333-ap-southeast-2-account",
+      "title": "Example title for s3_account_level_public_access_blocks",
+      "name": "account"
+    },
+    "metadata": {
+      "event_code": "s3_account_level_public_access_blocks",
+      "product": {
+        "uid": "prowler",
+        "name": "Prowler",
+        "vendor_name": "Prowler",
+        "version": "5.0.0"
+      }
+    },
+    "severity": "High",
+    "status": "New",
+    "status_code": "FAIL",
+    "cloud": {
+      "account": {
+        "uid": "111122223333",
+        "type": "AWS Account"
+      },
+      "provider": "aws",
+      "region": "ap-southeast-2"
+    },
+    "resources": [
+      {
+        "uid": "arn:aws:example:::account",
+        "name": "account",
+        "region": "ap-southeast-2",
+        "type": "example"
+      }
+    ]
+  },
+  {
+    "message": "Example result for ec2_ebs_default_encryption",
+    "activity_id": 1,
+    "activity_name": "Create",
+    "category_uid": 2,
+    "category_name": "Findings",
+    "class_uid": 2004,
+    "class_name": "Detection Finding",
+    "finding_info": {
+      "uid": "prowler-aws-ec2_ebs_default_encryption-111122223333-ap-southeast-2-ebs-default",
+      "title": "Example title for ec2_ebs_default_encryption",
+      "name": "ebs-default"
+    },
+    "metadata": {
+      "event_code": "ec2_ebs_default_encryption",
+      "product": {
+        "uid": "prowler",
+        "name": "Prowler",
+        "vendor_name": "Prowler",
+        "version": "5.0.0"
+      }
+    },
+    "severity": "High",
+    "status": "New",
+    "status_code": "FAIL",
+    "cloud": {
+      "account": {
+        "uid": "111122223333",
+        "type": "AWS Account"
+      },
+      "provider": "aws",
+      "region": "ap-southeast-2"
+    },
+    "resources": [
+      {
+        "uid": "arn:aws:example:::ebs-default",
+        "name": "ebs-default",
+        "region": "ap-southeast-2",
+        "type": "example"
+      }
+    ]
+  },
+  {
+    "message": "Example result for rds_instance_no_public_access",
+    "activity_id": 1,
+    "activity_name": "Create",
+    "category_uid": 2,
+    "category_name": "Findings",
+    "class_uid": 2004,
+    "class_name": "Detection Finding",
+    "finding_info": {
+      "uid": "prowler-aws-rds_instance_no_public_access-111122223333-ap-southeast-2-example-db",
+      "title": "Example title for rds_instance_no_public_access",
+      "name": "example-db"
+    },
+    "metadata": {
+      "event_code": "rds_instance_no_public_access",
+      "product": {
+        "uid": "prowler",
+        "name": "Prowler",
+        "vendor_name": "Prowler",
+        "version": "5.0.0"
+      }
+    },
+    "severity": "High",
+    "status": "New",
+    "status_code": "FAIL",
+    "cloud": {
+      "account": {
+        "uid": "111122223333",
+        "type": "AWS Account"
+      },
+      "provider": "aws",
+      "region": "ap-southeast-2"
+    },
+    "resources": [
+      {
+        "uid": "arn:aws:example:::example-db",
+        "name": "example-db",
+        "region": "ap-southeast-2",
+        "type": "example"
+      }
+    ]
+  },
+  {
+    "message": "Example result for kms_cmk_rotation_enabled",
+    "activity_id": 1,
+    "activity_name": "Create",
+    "category_uid": 2,
+    "category_name": "Findings",
+    "class_uid": 2004,
+    "class_name": "Detection Finding",
+    "finding_info": {
+      "uid": "prowler-aws-kms_cmk_rotation_enabled-444455556666-us-east-1-example-key",
+      "title": "Example title for kms_cmk_rotation_enabled",
+      "name": "example-key"
+    },
+    "metadata": {
+      "event_code": "kms_cmk_rotation_enabled",
+      "product": {
+        "uid": "prowler",
+        "name": "Prowler",
+        "vendor_name": "Prowler",
+        "version": "5.0.0"
+      }
+    },
+    "severity": "High",
+    "status": "New",
+    "status_code": "FAIL",
+    "cloud": {
+      "account": {
+        "uid": "444455556666",
+        "type": "AWS Account"
+      },
+      "provider": "aws",
+      "region": "us-east-1"
+    },
+    "resources": [
+      {
+        "uid": "arn:aws:example:::example-key",
+        "name": "example-key",
+        "region": "us-east-1",
+        "type": "example"
+      }
+    ]
+  },
+  {
+    "message": "Example result for ec2_elastic_ip_unassigned",
+    "activity_id": 1,
+    "activity_name": "Create",
+    "category_uid": 2,
+    "category_name": "Findings",
+    "class_uid": 2004,
+    "class_name": "Detection Finding",
+    "finding_info": {
+      "uid": "prowler-aws-ec2_elastic_ip_unassigned-111122223333-ap-southeast-2-eip-example",
+      "title": "Example title for ec2_elastic_ip_unassigned",
+      "name": "eip-example"
+    },
+    "metadata": {
+      "event_code": "ec2_elastic_ip_unassigned",
+      "product": {
+        "uid": "prowler",
+        "name": "Prowler",
+        "vendor_name": "Prowler",
+        "version": "5.0.0"
+      }
+    },
+    "severity": "High",
+    "status": "New",
+    "status_code": "FAIL",
+    "cloud": {
+      "account": {
+        "uid": "111122223333",
+        "type": "AWS Account"
+      },
+      "provider": "aws",
+      "region": "ap-southeast-2"
+    },
+    "resources": [
+      {
+        "uid": "arn:aws:example:::eip-example",
+        "name": "eip-example",
+        "region": "ap-southeast-2",
+        "type": "example"
+      }
+    ]
+  },
+  {
+    "message": "Example result for iam_root_mfa_enabled",
+    "activity_id": 1,
+    "activity_name": "Create",
+    "category_uid": 2,
+    "category_name": "Findings",
+    "class_uid": 2004,
+    "class_name": "Detection Finding",
+    "finding_info": {
+      "uid": "prowler-aws-iam_root_mfa_enabled-111122223333-us-east-1-root",
+      "title": "Example title for iam_root_mfa_enabled",
+      "name": "root"
+    },
+    "metadata": {
+      "event_code": "iam_root_mfa_enabled",
+      "product": {
+        "uid": "prowler",
+        "name": "Prowler",
+        "vendor_name": "Prowler",
+        "version": "5.0.0"
+      }
+    },
+    "severity": "High",
+    "status": "New",
+    "status_code": "PASS",
+    "cloud": {
+      "account": {
+        "uid": "111122223333",
+        "type": "AWS Account"
+      },
+      "provider": "aws",
+      "region": "us-east-1"
+    },
+    "resources": [
+      {
+        "uid": "arn:aws:example:::root",
+        "name": "root",
+        "region": "us-east-1",
+        "type": "example"
+      }
+    ]
+  },
+  {
+    "message": "Example result for s3_bucket_secure_transport_policy",
+    "activity_id": 1,
+    "activity_name": "Create",
+    "category_uid": 2,
+    "category_name": "Findings",
+    "class_uid": 2004,
+    "class_name": "Detection Finding",
+    "finding_info": {
+      "uid": "prowler-aws-s3_bucket_secure_transport_policy-111122223333-ap-southeast-2-example-muted-bucket",
+      "title": "Example title for s3_bucket_secure_transport_policy",
+      "name": "example-muted-bucket"
+    },
+    "metadata": {
+      "event_code": "s3_bucket_secure_transport_policy",
+      "product": {
+        "uid": "prowler",
+        "name": "Prowler",
+        "vendor_name": "Prowler",
+        "version": "5.0.0"
+      }
+    },
+    "severity": "High",
+    "status": "Suppressed",
+    "status_code": "FAIL",
+    "cloud": {
+      "account": {
+        "uid": "111122223333",
+        "type": "AWS Account"
+      },
+      "provider": "aws",
+      "region": "ap-southeast-2"
+    },
+    "resources": [
+      {
+        "uid": "arn:aws:example:::example-muted-bucket",
+        "name": "example-muted-bucket",
+        "region": "ap-southeast-2",
+        "type": "example"
+      }
+    ]
+  }
+]

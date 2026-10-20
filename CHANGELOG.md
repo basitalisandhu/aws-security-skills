@@ -4,6 +4,18 @@ All notable changes to this project are documented here. The format follows Keep
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-20
+
+### Added
+
+- `preventive-control-mapper`: `preventive_map.py` turns failing Security Hub controls (ASFF `get-findings` export), Prowler JSON-OCSF findings or a CSV with a `control_id` column into the preventive controls that stop the same misconfiguration being created again. A bundled table (`references/preventive-map.json`) covers 25 Security Hub controls across S3, EC2 and EBS, IAM, CloudTrail, Config, GuardDuty, KMS, RDS and Lambda, with the matching Prowler check ids. Each control lists its options strongest first (SCP statement, account setting, EC2 declarative policy, IaC check, then the AWS Config managed rule that detects a regression), each with the exact snippet, caveats and the AWS documentation page it was checked against. The script merges the SCP statements into one draft policy and reports its size against the 10,240-character SCP limit, lists unmapped controls instead of dropping them, and exits 0 (all mapped), 1 (unmapped control or draft over the limit) or 2 (bad input). Options: `--mapping`, `--format markdown|json`, `--out`, `--scp-out`, `--break-glass-role`, `--scp-limit`. 35 tests with synthetic fixtures under `tests/fixtures/preventive-map/`.
+- Dispatcher subcommand `preventive-map`; the container image carries the mapping table and its build smoke-tests it, and the container check in CI runs the subcommand's `--help`.
+
+### Changed
+
+- `security-hub-triage` and `scp-guardrails` name the new skill as the next step after a clean-up.
+- Version 0.5.0 in `pyproject.toml`, `plugin.json`, `marketplace.json`, the dispatcher and the README container examples; the READMEs list the new skill and say eleven skills.
+
 ## [0.4.2] - 2026-10-20
 
 ### Fixed

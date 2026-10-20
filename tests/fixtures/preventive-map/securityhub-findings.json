@@ -1,0 +1,392 @@
+{
+  "Findings": [
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-southeast-2:111122223333:finding/example-0001",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/securityhub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "Title": "Example finding for S3.8",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "S3.8"
+      },
+      "Resources": [
+        {
+          "Type": "AwsS3Bucket",
+          "Id": "arn:aws:s3:::example-public-site",
+          "Region": "ap-southeast-2"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-southeast-2:111122223333:finding/example-0002",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/securityhub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "Title": "Example finding for S3.8",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "S3.8"
+      },
+      "Resources": [
+        {
+          "Type": "AwsS3Bucket",
+          "Id": "arn:aws:s3:::example-reports",
+          "Region": "ap-southeast-2"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:444455556666:finding/example-0003",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "AwsAccountId": "444455556666",
+      "Region": "us-east-1",
+      "Title": "Example finding for S3.8",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "S3.8"
+      },
+      "Resources": [
+        {
+          "Type": "AwsS3Bucket",
+          "Id": "arn:aws:s3:::example-logs",
+          "Region": "us-east-1"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-southeast-2:111122223333:finding/example-0004",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/securityhub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "Title": "Example finding for S3.1",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "S3.1"
+      },
+      "Resources": [
+        {
+          "Type": "AwsAccount",
+          "Id": "AWS::::Account:111122223333",
+          "Region": "ap-southeast-2"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-southeast-2:111122223333:finding/example-0005",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/securityhub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "Title": "Example finding for EC2.8",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.8"
+      },
+      "Resources": [
+        {
+          "Type": "AwsEc2Instance",
+          "Id": "arn:aws:ec2:ap-southeast-2:111122223333:instance/i-0aaaabbbbccccdddd",
+          "Region": "ap-southeast-2"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-southeast-2:111122223333:finding/example-0006",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/securityhub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "Title": "Example finding for EC2.8",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NOTIFIED"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.8"
+      },
+      "Resources": [
+        {
+          "Type": "AwsEc2Instance",
+          "Id": "arn:aws:ec2:ap-southeast-2:111122223333:instance/i-0eeeeffff00001111",
+          "Region": "ap-southeast-2"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-southeast-2:111122223333:finding/example-0007",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/securityhub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "Title": "Example finding for EC2.19",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.19"
+      },
+      "Resources": [
+        {
+          "Type": "AwsEc2SecurityGroup",
+          "Id": "arn:aws:ec2:ap-southeast-2:111122223333:security-group/sg-0aaaabbbbccccdddd",
+          "Region": "ap-southeast-2"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:444455556666:finding/example-0008",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "AwsAccountId": "444455556666",
+      "Region": "us-east-1",
+      "Title": "Example finding for IAM.4",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "IAM.4"
+      },
+      "Resources": [
+        {
+          "Type": "AwsAccount",
+          "Id": "AWS::::Account:444455556666",
+          "Region": "us-east-1"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:444455556666:finding/example-0009",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "AwsAccountId": "444455556666",
+      "Region": "us-east-1",
+      "Title": "Example finding for IAM.6",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "IAM.6"
+      },
+      "Resources": [
+        {
+          "Type": "AwsAccount",
+          "Id": "AWS::::Account:444455556666",
+          "Region": "us-east-1"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-southeast-2:111122223333:finding/example-0010",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/securityhub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "Title": "Example finding for KMS.4",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "FAILED"
+      },
+      "Resources": [
+        {
+          "Type": "AwsKmsKey",
+          "Id": "arn:aws:kms:ap-southeast-2:111122223333:key/11111111-2222-3333-4444-555555555555",
+          "Region": "ap-southeast-2"
+        }
+      ],
+      "ProductFields": {
+        "ControlId": "KMS.4"
+      }
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:us-east-1:444455556666:finding/example-0011",
+      "ProductArn": "arn:aws:securityhub:us-east-1::product/aws/securityhub",
+      "AwsAccountId": "444455556666",
+      "Region": "us-east-1",
+      "Title": "Example finding for EC2.7",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.7"
+      },
+      "Resources": [
+        {
+          "Type": "AwsAccount",
+          "Id": "AWS::::Account:444455556666",
+          "Region": "us-east-1"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-southeast-2:111122223333:finding/example-0012",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/securityhub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "Title": "Example finding for ECR.1",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "ECR.1"
+      },
+      "Resources": [
+        {
+          "Type": "AwsEcrRepository",
+          "Id": "arn:aws:ecr:ap-southeast-2:111122223333:repository/example-app",
+          "Region": "ap-southeast-2"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-southeast-2:111122223333:finding/example-0013",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/securityhub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "Title": "Example finding for CloudTrail.1",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "PASSED",
+        "SecurityControlId": "CloudTrail.1"
+      },
+      "Resources": [
+        {
+          "Type": "AwsAccount",
+          "Id": "AWS::::Account:111122223333",
+          "Region": "ap-southeast-2"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-southeast-2:111122223333:finding/example-0014",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/securityhub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "Title": "Example finding for S3.2",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "SUPPRESSED"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "S3.2"
+      },
+      "Resources": [
+        {
+          "Type": "AwsS3Bucket",
+          "Id": "arn:aws:s3:::example-old-site",
+          "Region": "ap-southeast-2"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-southeast-2:111122223333:finding/example-0015",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/securityhub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "Title": "Example finding for EC2.7",
+      "RecordState": "ARCHIVED",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "EC2.7"
+      },
+      "Resources": [
+        {
+          "Type": "AwsAccount",
+          "Id": "AWS::::Account:111122223333",
+          "Region": "ap-southeast-2"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:securityhub:ap-southeast-2:111122223333:finding/example-0016",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/securityhub",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "Title": "Example finding for RDS.3",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "RESOLVED"
+      },
+      "Compliance": {
+        "Status": "FAILED",
+        "SecurityControlId": "RDS.3"
+      },
+      "Resources": [
+        {
+          "Type": "AwsRdsDbInstance",
+          "Id": "arn:aws:rds:ap-southeast-2:111122223333:db:example-db",
+          "Region": "ap-southeast-2"
+        }
+      ]
+    },
+    {
+      "SchemaVersion": "2018-10-08",
+      "Id": "arn:aws:guardduty:ap-southeast-2:111122223333:detector/example/finding/example",
+      "AwsAccountId": "111122223333",
+      "Region": "ap-southeast-2",
+      "ProductArn": "arn:aws:securityhub:ap-southeast-2::product/aws/guardduty",
+      "Title": "Example GuardDuty finding",
+      "RecordState": "ACTIVE",
+      "Workflow": {
+        "Status": "NEW"
+      },
+      "Resources": [
+        {
+          "Type": "AwsEc2Instance",
+          "Id": "i-0aaaabbbbccccdddd"
+        }
+      ]
+    }
+  ]
+}

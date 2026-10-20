@@ -7,7 +7,7 @@
 # Standard library only: no pip install. The base image is pinned by digest (python:3.12-slim, multi-arch index).
 ARG PYTHON_IMAGE=python:3.12-slim@sha256:dddfd7e07f9d15aeeca61529320492139d21cac7f0070c00609243e51e4e0016
 
-# Assemble the tree in a throwaway stage: only the dispatcher and the skill scripts, byte-compiled, and smoke-tested.
+# Assemble the tree in a throwaway stage: the dispatcher, the skill scripts and the preventive-map table, byte-compiled, and smoke-tested.
 FROM ${PYTHON_IMAGE} AS build
 WORKDIR /app
 COPY LICENSE README.md pyproject.toml ./
@@ -17,10 +17,16 @@ RUN set -e; for d in /tmp/skills/*/scripts; do \
       skill=$(basename "$(dirname "$d")"); \
       mkdir -p "plugins/aws-security/skills/$skill/scripts"; \
       cp "$d"/*.py "plugins/aws-security/skills/$skill/scripts/"; \
+      if [ -f "$(dirname "$d")/references/preventive-map.json" ]; then \
+        mkdir -p "plugins/aws-security/skills/$skill/references"; \
+        cp "$(dirname "$d")/references/preventive-map.json" "plugins/aws-security/skills/$skill/references/"; \
+      fi; \
     done \
  && chmod 0755 scripts/cli.py plugins/aws-security/skills/*/scripts/*.py \
  && python -m compileall -q scripts plugins \
- && python scripts/cli.py --help > /dev/null
+ && python scripts/cli.py --help > /dev/null \
+ && printf 'control_id\nS3.1\n' > /tmp/smoke.csv \
+ && python scripts/cli.py preventive-map --findings /tmp/smoke.csv > /dev/null
 
 FROM ${PYTHON_IMAGE}
 ARG VERSION=0.0.0-dev

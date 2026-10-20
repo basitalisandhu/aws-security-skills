@@ -1,0 +1,3 @@
+control_id,account_id,region,resource
+S3.1,111122223333,ap-southeast-2,AWS::::Account:111122223333
+EC2.8,111122223333,ap-southeast-2,i-0aaaabbbbccccdddd
