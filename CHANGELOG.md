@@ -4,6 +4,10 @@ All notable changes to this project are documented here. The format follows Keep
 
 ## [Unreleased]
 
+### Changed
+
+- `iam-least-privilege-review`: Scope sensitive data-read suggestions for Secrets Manager, SSM parameters, KMS decrypt, and S3 objects to resource ARNs instead of `*`.
+
 ## [0.4.1] - 2026-10-18
 
 ### Fixed

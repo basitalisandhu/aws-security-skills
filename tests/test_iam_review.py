@@ -71,6 +71,44 @@ def test_suggested_policy_scopes_resources_and_passrole():
     assert by_sid["PolicyAdmin"]["Resource"] == "arn:aws:iam::123456789012:policy/*"  # already specific, unchanged
 
 
+def test_suggested_policy_scopes_sensitive_data_reads():
+    policy = {
+        "Version": "2012-10-17",
+        "Statement": [{
+            "Sid": "ReadSecret",
+            "Effect": "Allow",
+            "Action": "secretsmanager:GetSecretValue",
+            "Resource": "*",
+        }],
+    }
+
+    statements = mod.suggest(policy)["Statement"]
+
+    assert len(statements) == 1
+    assert statements[0]["Action"] == ["secretsmanager:GetSecretValue"]
+    assert statements[0]["Resource"] == (
+        "arn:aws:secretsmanager:<region>:<account-id>:secret:<secret-name>-*"
+    )
+
+
+def test_suggested_policy_scopes_s3_object_reads():
+    policy = {
+        "Version": "2012-10-17",
+        "Statement": [{
+            "Sid": "ReadObject",
+            "Effect": "Allow",
+            "Action": "s3:GetObject",
+            "Resource": "*",
+        }],
+    }
+
+    statements = mod.suggest(policy)["Statement"]
+
+    assert len(statements) == 1
+    assert statements[0]["Action"] == ["s3:GetObject"]
+    assert statements[0]["Resource"] == "arn:aws:s3:::<bucket-name>/*"
+
+
 def test_text_output_and_fail_on():
     rc, out, _ = run_main(mod, [str(IAM / "ci-deployer.json")])
     assert rc == 1 and "IAM-PRIVESC" in out and "replace every <placeholder>" in out
