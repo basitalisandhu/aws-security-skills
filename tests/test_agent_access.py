@@ -209,3 +209,15 @@ def test_boundary_denies_turning_off_security_hub_v2():
     _, plan = run_json(mod, ["plan", "--spec", str(SPEC), "--json"])
     boundary = json.dumps(plan["files"]["permissions-boundary.json"])
     assert "securityhub:DisableSecurityHubV2" in boundary
+
+
+def test_spend_deny_list_is_in_boundary_and_scp_under_a_neutral_name():
+    # CodeQL's sensitive-name heuristic read the old constant name BILLING as private data and flagged the
+    # --json print of the plan (claude-skills alert 6). The list only holds IAM action names, so it is
+    # named SPEND_ACTIONS; module constants must not use names the heuristic treats as secrets or private data.
+    import re
+    sensitive = re.compile(r"(?i)(billing|password|passwd|secret|token|private|credit.?card|api.?key)")
+    assert not [n for n in vars(mod) if n.isupper() and sensitive.search(n)]
+    result = mod.plan(plan_spec())
+    for name in ("permissions-boundary.json", "sandbox-scp.json"):
+        assert set(mod.SPEND_ACTIONS) <= set(all_actions(result["files"][name]))

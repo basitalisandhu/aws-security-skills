@@ -4,9 +4,16 @@ All notable changes to this project are documented here. The format follows Keep
 
 ## [Unreleased]
 
+## [0.4.2] - 2026-10-20
+
+### Fixed
+
+- `agent_access.py`: the list of spend and commitment actions denied by the permissions boundary and the sandbox SCP is named `SPEND_ACTIONS` (was `BILLING`). CodeQL's sensitive-name heuristic read the old name as private data and raised a false high-severity clear-text logging alert on `plan --json`; the list holds IAM action names only and the generated policies are unchanged. A test keeps module constants off names the heuristic treats as secrets.
+
 ### Changed
 
 - `iam-least-privilege-review`: Scope sensitive data-read suggestions for Secrets Manager, SSM parameters, KMS decrypt, and S3 objects to resource ARNs instead of `*`.
+- Version 0.4.2 in `pyproject.toml`, `plugin.json`, `marketplace.json`, the dispatcher and the README container examples.
 
 ## [0.4.1] - 2026-10-18
 

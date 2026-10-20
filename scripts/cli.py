@@ -15,7 +15,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-__version__ = "0.4.1"
+__version__ = "0.4.2"
 
 PROG = "aws-security"
 ROOT = Path(__file__).resolve().parents[1]
