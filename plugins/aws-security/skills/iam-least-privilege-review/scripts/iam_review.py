@@ -252,23 +252,15 @@ def review_document(name: str, doc: dict) -> tuple[list[dict], dict]:
 
 
 def scoped_resource(service: str) -> str:
-    templates = {
-        "s3": "arn:aws:s3:::<bucket-name>/<object-key>",
-        "iam": "arn:aws:iam::<account-id>:role/<role-name>",
-        "sts": "arn:aws:iam::<account-id>:role/<role-name>",
-        "lambda": "arn:aws:lambda:<region>:<account-id>:function:<function-name>",
-        "dynamodb": "arn:aws:dynamodb:<region>:<account-id>:table/<table-name>",
-        "sqs": "arn:aws:sqs:<region>:<account-id>:<queue-name>",
-        "sns": "arn:aws:sns:<region>:<account-id>:<topic-name>",
-        "kms": "arn:aws:kms:<region>:<account-id>:key/<key-id>",
-        "secretsmanager": "arn:aws:secretsmanager:<region>:<account-id>:secret:<secret-name>-*",
-        "ssm": "arn:aws:ssm:<region>:<account-id>:parameter/<parameter-name>",
-        "ec2": "arn:aws:ec2:<region>:<account-id>:instance/*",
-    }
-    return templates.get(
-        service,
-        f"arn:aws:{service}:<region>:<account-id>:<resource>",
-    )
+    templates = {"s3": "arn:aws:s3:::<bucket-name>/*", "iam": "arn:aws:iam::<account-id>:role/<role-name>",
+                 "sts": "arn:aws:iam::<account-id>:role/<role-name>", "lambda": "arn:aws:lambda:<region>:<account-id>:function:<function-name>",
+                 "dynamodb": "arn:aws:dynamodb:<region>:<account-id>:table/<table-name>",
+                 "sqs": "arn:aws:sqs:<region>:<account-id>:<queue-name>", "sns": "arn:aws:sns:<region>:<account-id>:<topic-name>",
+                 "kms": "arn:aws:kms:<region>:<account-id>:key/<key-id>",
+                 "secretsmanager": "arn:aws:secretsmanager:<region>:<account-id>:secret:<secret-name>-*",
+                 "ssm": "arn:aws:ssm:<region>:<account-id>:parameter/<parameter-name>",
+                 "ec2": "arn:aws:ec2:<region>:<account-id>:instance/*"}
+    return templates.get(service, f"arn:aws:{service}:<region>:<account-id>:<resource>")
 
 
 def suggest(doc: dict) -> dict:
@@ -284,12 +276,7 @@ def suggest(doc: dict) -> dict:
         if "*" not in resources:
             out.append(st)
             continue
-        reads = sorted(
-            a for a in actions
-            if a != "*"
-            and is_read(a)
-            and a.lower() not in SCOPED_READ_ACTIONS
-        )
+        reads = sorted(a for a in actions if a != "*" and is_read(a) and a.lower() not in SCOPED_READ_ACTIONS)
         writes = [a for a in actions if a not in reads]
         if reads:
             out.append({"Sid": f"{sid}Read", "Effect": "Allow", "Action": reads, "Resource": "*",

@@ -100,3 +100,39 @@ def test_bad_input_exit_2(tmp_path, write):
 def test_help_mentions_checks():
     rc, out, _ = run_main(mod, ["--help"])
     assert rc == 0 and "ROOT-MFA" in out and "SG-OPEN-ALL" in out
+
+
+def test_wrong_shape_file_is_bad_input_not_a_silent_pass(tmp_path):
+    # {"foo": 1} saved as account-summary.json used to count ROOT-MFA and ROOT-ACCESS-KEYS as evaluated and passing.
+    (tmp_path / "account-summary.json").write_text('{"foo": 1}', encoding="utf-8")
+    rc, out, err = run_main(mod, [str(tmp_path)])
+    assert rc == 2 and out == ""
+    assert "account-summary.json" in err and "SummaryMap" in err
+
+
+def test_json_list_instead_of_object_is_bad_input_not_a_traceback(tmp_path):
+    (tmp_path / "ec2-security-groups.json").write_text("[1, 2]", encoding="utf-8")
+    rc, _, err = run_main(mod, [str(tmp_path)])
+    assert rc == 2
+    assert "expected a JSON object" in err
+
+
+def test_csv_saved_as_json_is_bad_input(tmp_path):
+    (tmp_path / "cloudtrail-trails.json").write_text("a,b\n1,2\n", encoding="utf-8")
+    rc, _, err = run_main(mod, [str(tmp_path)])
+    assert rc == 2 and "invalid JSON" in err
+
+
+def test_empty_credential_report_is_bad_input(tmp_path):
+    (tmp_path / "credential-report.csv").write_text("", encoding="utf-8")
+    rc, _, err = run_main(mod, [str(tmp_path)])
+    assert rc == 2 and "root_account" in err
+
+
+def test_empty_object_is_still_valid_where_the_cli_returns_it(tmp_path):
+    # password-policy, account public access block and describe-hub legitimately save {} when nothing is set.
+    for name in ("password-policy.json", "s3control-public-access-block.json", "securityhub-hub.json"):
+        (tmp_path / name).write_text("{}", encoding="utf-8")
+    rc, rep = run_json(mod, [str(tmp_path), "--json"])
+    assert rc == 1
+    assert {"IAM-PASSWORD-POLICY", "S3-ACCOUNT-PAB", "SH-DISABLED"} <= set(checks(rep))

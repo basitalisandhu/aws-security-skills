@@ -1,4 +1,3 @@
-
 from conftest import FIXTURES, load_script, run_json, run_main
 
 mod = load_script("iam-least-privilege-review", "iam_review.py")
@@ -24,14 +23,8 @@ def test_full_admin_is_critical_and_ranked_first():
 
 def test_ci_deployer_findings():
     _, rep = review("ci-deployer.json")
-    assert checks(rep) == {
-        "IAM-PRIVESC",
-        "IAM-ASSUMEROLE-ANY",
-        "IAM-PASSROLE-UNSCOPED",
-        "IAM-SERVICE-WILDCARD",
-        "IAM-WRITE-ON-ANY-RESOURCE",
-        "IAM-WILDCARD-ACTION",
-    }
+    assert checks(rep) == {"IAM-PRIVESC", "IAM-ASSUMEROLE-ANY", "IAM-PASSROLE-UNSCOPED", "IAM-SERVICE-WILDCARD",
+                           "IAM-WRITE-ON-ANY-RESOURCE", "IAM-WILDCARD-ACTION"}
     paths = {f["evidence"] for f in rep["findings"] if f["check"] == "IAM-PRIVESC"}
     assert "iam:PassRole + lambda:CreateFunction + lambda:InvokeFunction" in paths
     assert "iam:CreatePolicyVersion" in paths  # policy/* is a wildcard resource
@@ -54,10 +47,7 @@ def test_notaction_allow_and_policy_version_output():
     _, rep = review("notaction.json")
     assert "IAM-NOTACTION-ALLOW" in checks(rep) and "IAM-PRIVESC" in checks(rep)
     _, rep = review("policy-version-output.json")
-    assert any(
-        f["check"] == "IAM-PRIVESC" and f["evidence"] == "iam:AttachUserPolicy"
-        for f in rep["findings"]
-    )
+    assert any(f["check"] == "IAM-PRIVESC" and f["evidence"] == "iam:AttachUserPolicy" for f in rep["findings"])
 
 
 def test_authorization_details_skips_aws_managed_unless_asked():
@@ -67,9 +57,7 @@ def test_authorization_details_skips_aws_managed_unless_asked():
     assert "arn:aws:iam::aws:policy/AdministratorAccess" not in policies
     assert not any("app-role" in p for p in policies)  # URL-encoded scoped inline policy
     _, rep = review("authorization-details.json", extra=["--include-aws-managed"])
-    assert "arn:aws:iam::aws:policy/AdministratorAccess" in {
-        f["policy"] for f in rep["findings"]
-    }
+    assert "arn:aws:iam::aws:policy/AdministratorAccess" in {f["policy"] for f in rep["findings"]}
 
 
 def test_suggested_policy_scopes_resources_and_passrole():
@@ -118,9 +106,7 @@ def test_suggested_policy_scopes_s3_object_reads():
 
     assert len(statements) == 1
     assert statements[0]["Action"] == ["s3:GetObject"]
-    assert statements[0]["Resource"] == (
-        "arn:aws:s3:::<bucket-name>/<object-key>"
-    )
+    assert statements[0]["Resource"] == "arn:aws:s3:::<bucket-name>/*"
 
 
 def test_text_output_and_fail_on():

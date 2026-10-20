@@ -1,0 +1,137 @@
+{
+ "Records": [
+  {
+   "eventVersion": "1.09",
+   "eventSource": "s3.amazonaws.com",
+   "eventName": "ListBuckets",
+   "eventTime": "2026-10-05T09:01:00Z",
+   "awsRegion": "ap-southeast-2",
+   "sourceIPAddress": "203.0.113.10",
+   "userIdentity": {
+    "type": "AssumedRole",
+    "principalId": "AROAEXAMPLEROLEID:agent@operator",
+    "arn": "arn:aws:sts::123456789012:assumed-role/AgentRole/agent@operator",
+    "accessKeyId": "AKIAIOSFODNN7EXAMPLE"
+   },
+   "readOnly": true
+  },
+  {
+   "eventVersion": "1.09",
+   "eventSource": "s3.amazonaws.com",
+   "eventName": "GetObject",
+   "eventTime": "2026-10-05T09:02:00Z",
+   "awsRegion": "ap-southeast-2",
+   "sourceIPAddress": "203.0.113.10",
+   "userIdentity": {
+    "type": "AssumedRole",
+    "principalId": "AROAEXAMPLEROLEID:agent@operator",
+    "arn": "arn:aws:sts::123456789012:assumed-role/AgentRole/agent@operator",
+    "accessKeyId": "AKIAIOSFODNN7EXAMPLE"
+   },
+   "readOnly": true,
+   "requestParameters": {
+    "bucketName": "app-artifacts",
+    "key": "build.zip"
+   }
+  },
+  {
+   "eventVersion": "1.09",
+   "eventSource": "lambda.amazonaws.com",
+   "eventName": "UpdateFunctionCode",
+   "eventTime": "2026-10-05T09:03:00Z",
+   "awsRegion": "ap-southeast-2",
+   "sourceIPAddress": "203.0.113.10",
+   "userIdentity": {
+    "type": "AssumedRole",
+    "principalId": "AROAEXAMPLEROLEID:agent@operator",
+    "arn": "arn:aws:sts::123456789012:assumed-role/AgentRole/agent@operator",
+    "accessKeyId": "AKIAIOSFODNN7EXAMPLE"
+   },
+   "requestParameters": {
+    "functionName": "orders-api"
+   }
+  },
+  {
+   "eventVersion": "1.09",
+   "eventSource": "s3.amazonaws.com",
+   "eventName": "DeleteBucket",
+   "eventTime": "2026-10-05T09:04:00Z",
+   "awsRegion": "ap-southeast-2",
+   "sourceIPAddress": "203.0.113.10",
+   "userIdentity": {
+    "type": "AssumedRole",
+    "principalId": "AROAEXAMPLEROLEID:agent@operator",
+    "arn": "arn:aws:sts::123456789012:assumed-role/AgentRole/agent@operator",
+    "accessKeyId": "AKIAIOSFODNN7EXAMPLE"
+   },
+   "requestParameters": {
+    "bucketName": "old-logs"
+   }
+  },
+  {
+   "eventVersion": "1.09",
+   "eventSource": "iam.amazonaws.com",
+   "eventName": "AttachRolePolicy",
+   "eventTime": "2026-10-05T09:05:00Z",
+   "awsRegion": "ap-southeast-2",
+   "sourceIPAddress": "203.0.113.10",
+   "userIdentity": {
+    "type": "AssumedRole",
+    "principalId": "AROAEXAMPLEROLEID:agent@operator",
+    "arn": "arn:aws:sts::123456789012:assumed-role/AgentRole/agent@operator",
+    "accessKeyId": "AKIAIOSFODNN7EXAMPLE"
+   },
+   "requestParameters": {
+    "roleName": "AgentRole"
+   }
+  },
+  {
+   "eventVersion": "1.09",
+   "eventSource": "cloudtrail.amazonaws.com",
+   "eventName": "StopLogging",
+   "eventTime": "2026-10-05T09:06:00Z",
+   "awsRegion": "ap-southeast-2",
+   "sourceIPAddress": "203.0.113.10",
+   "userIdentity": {
+    "type": "AssumedRole",
+    "principalId": "AROAEXAMPLEROLEID:agent@operator",
+    "arn": "arn:aws:sts::123456789012:assumed-role/AgentRole/agent@operator",
+    "accessKeyId": "AKIAIOSFODNN7EXAMPLE"
+   },
+   "resources": [
+    {
+     "ARN": "arn:aws:cloudtrail:ap-southeast-2:123456789012:trail/main"
+    }
+   ]
+  },
+  {
+   "eventVersion": "1.09",
+   "eventSource": "ec2.amazonaws.com",
+   "eventName": "RunInstances",
+   "eventTime": "2026-10-05T09:07:00Z",
+   "awsRegion": "us-east-1",
+   "sourceIPAddress": "203.0.113.10",
+   "userIdentity": {
+    "type": "AssumedRole",
+    "principalId": "AROAEXAMPLEROLEID:agent@operator",
+    "arn": "arn:aws:sts::123456789012:assumed-role/AgentRole/agent@operator",
+    "accessKeyId": "AKIAIOSFODNN7EXAMPLE"
+   },
+   "errorCode": "Client.UnauthorizedOperation"
+  },
+  {
+   "eventVersion": "1.09",
+   "eventSource": "s3.amazonaws.com",
+   "eventName": "ListBuckets",
+   "eventTime": "2026-10-05T09:08:00Z",
+   "awsRegion": "ap-southeast-2",
+   "sourceIPAddress": "203.0.113.10",
+   "userIdentity": {
+    "type": "AssumedRole",
+    "principalId": "AROAEXAMPLEROLEID:someone-else",
+    "arn": "arn:aws:sts::123456789012:assumed-role/AdminRole/someone-else",
+    "accessKeyId": "AKIAIOSFODNN7EXAMPLE"
+   }
+  }
+ ]
+}

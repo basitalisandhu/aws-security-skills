@@ -50,11 +50,11 @@ Requirements: Python 3.11 or newer as `python3`. AWS CLI v2 and read-only creden
 The plugin installs as shown in the Quickstart. The skill scripts are also published as one container image on GitHub Packages (linux/amd64 and linux/arm64) for running them without a checkout, for example in CI. The image's entrypoint is `aws-security <subcommand> [args]`; mount the files to read at `/work`, which is the working directory:
 
 ```bash
-docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.4.0 audit /work/exports
-docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.4.0 iam-review /work/policy.json
-docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.4.0 scp-build /work/scp-spec.yaml --out /work/scps
-docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.4.0 ir-runbook triage --guardduty /work/findings.json --out /work/ir
-docker run --rm ghcr.io/basitalisandhu/aws-security-skills:0.4.0 --help
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.4.1 audit /work/exports
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.4.1 iam-review /work/policy.json
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.4.1 scp-build /work/scp-spec.yaml --out /work/scps
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.4.1 ir-runbook triage --guardduty /work/findings.json --out /work/ir
+docker run --rm ghcr.io/basitalisandhu/aws-security-skills:0.4.1 --help
 ```
 
 This pack is also part of [claude-skills](https://github.com/basitalisandhu/claude-skills), which holds every skill I maintain as one marketplace: `/plugin marketplace add basitalisandhu/claude-skills`.
@@ -78,10 +78,10 @@ Every subcommand passes its arguments to the script unchanged, so `aws-security 
 Each image is signed with cosign (keyless) and has a build provenance attestation and an SPDX SBOM (attached to the GitHub Release). To verify:
 
 ```bash
-cosign verify ghcr.io/basitalisandhu/aws-security-skills:0.4.0 \
+cosign verify ghcr.io/basitalisandhu/aws-security-skills:0.4.1 \
   --certificate-identity-regexp '^https://github.com/basitalisandhu/aws-security-skills/' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
-gh attestation verify oci://ghcr.io/basitalisandhu/aws-security-skills:0.4.0 --owner basitalisandhu
+gh attestation verify oci://ghcr.io/basitalisandhu/aws-security-skills:0.4.1 --owner basitalisandhu
 ```
 
 ## When to use this
@@ -102,7 +102,7 @@ gh attestation verify oci://ghcr.io/basitalisandhu/aws-security-skills:0.4.0 --o
 | Skill | Triggers on | What it produces |
 |---|---|---|
 | `aws-account-audit` | "audit this account", baseline, handover, after an incident | `audit_account.py` findings with severity, evidence and a fix command to review, plus the checks it could not evaluate |
-| `scp-guardrails` | write, review or debug SCPs; a region SCP broke IAM | `scp_builder.py` deny-list SCPs packed under 5120 characters and `scp_lint.py` findings; a guardrail catalog with side effects |
+| `scp-guardrails` | write, review or debug SCPs; a region SCP broke IAM | `scp_builder.py` deny-list SCPs packed under the 10,240-character SCP quota and `scp_lint.py` findings; a guardrail catalog with side effects |
 | `landing-zone-blast-radius` | design an organization, place a new workload | `blast_radius.py` OU tree, account names, foundation accounts, SCP attachment map and blast-radius table |
 | `iam-least-privilege-review` | review or tighten a policy, "can this role escalate?" | `iam_review.py` ranked findings (wildcards, PassRole, AssumeRole, escalation paths) and a tightened policy template |
 | `security-hub-triage` | a findings backlog, weekly security review | `triage_findings.py` findings grouped by control and resource, suppression counts and an owner-assigned action list |
@@ -142,7 +142,7 @@ Report security problems privately: see [SECURITY.md](SECURITY.md).
 
 **Can I use it on many accounts?** Run the audit once per account (assume a read-only role in each), then use `security-hub-triage` on the organization-wide Security Hub export from the delegated administrator account.
 
-**Why are SCP sizes measured without whitespace?** The builder writes compact JSON and measures that form, so what you upload is what was measured against the 5120-character limit.
+**Why are SCP sizes measured without whitespace?** The builders write compact JSON and measure that form, so what you upload is what was measured against the 10,240-character SCP quota. The AWS CLI and SDKs keep whitespace when they upload a policy (only the console strips it), so `scp_lint.py` also warns when a file is over the limit as written.
 
 **Does it replace Security Hub, Prowler or IAM Access Analyzer?** No. It is a scripted procedure for common checks and design questions inside Claude Code; use those tools for broad continuous coverage.
 
@@ -154,6 +154,8 @@ python3 -m ruff check .
 python3 scripts/validate_plugins.py        # structure, frontmatter, scripts, README and house style
 claude plugin validate --strict . && claude plugin validate --strict ./plugins/aws-security
 ```
+
+Every script exits 0 (clean), 1 (findings to review) or 2 (bad input or usage); the [plugin README](plugins/aws-security/README.md#exit-codes) has the table and real output samples from the fixtures.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the ground rules and [docs/good-first-issues.md](docs/good-first-issues.md) for a place to start.
 
