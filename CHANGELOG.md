@@ -4,6 +4,17 @@ All notable changes to this project are documented here. The format follows Keep
 
 ## [Unreleased]
 
+## [0.6.1] - 2026-10-26
+
+### Fixed
+
+- `_miniyaml` (all six copies, used for every YAML spec and config): a sequence item that consumed no input, such as `- - -:`, made the parser loop for ever, so one damaged spec hung `scp_builder.py`, `blast_radius.py`, `triage_findings.py`, `agent_access.py`, `spend_guardrails.py` and `sandbox_pack.py`; it is now a parse error and the script exits 2. A flow collection used as a mapping key (`[{x: 1}: 2]`) and an anchor with nothing after it (`--- &x`) raised `TypeError` or `IndexError` inside the parser; the first is a parse error and the second an empty node. The same fix as m365-governance-skills 0.6.0.
+- `tests/test_miniyaml_fuzz.py` runs the known inputs and a seeded set of random YAML-like strings through every copy in a child process with a time limit, checks the six copies are identical, and checks a spec that used to hang exits 2.
+
+### Changed
+
+- Version 0.6.1 in `pyproject.toml`, `plugin.json`, `marketplace.json`, the dispatcher and the README container examples.
+
 ## [0.6.0] - 2026-10-26
 
 ### Added
