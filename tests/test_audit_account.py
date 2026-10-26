@@ -136,3 +136,44 @@ def test_empty_object_is_still_valid_where_the_cli_returns_it(tmp_path):
     rc, rep = run_json(mod, [str(tmp_path), "--json"])
     assert rc == 1
     assert {"IAM-PASSWORD-POLICY", "S3-ACCOUNT-PAB", "SH-DISABLED"} <= set(checks(rep))
+
+
+DETECTOR = "12abc34d567e8fa901bc2d34eexample"
+
+
+def test_guardduty_detector_that_exists_but_is_disabled_is_reported(tmp_path):
+    folder = tmp_path / "acct"
+    shutil.copytree(SECURE, folder)
+    path = folder / "regions" / "ap-southeast-2" / f"guardduty-detector-{DETECTOR}.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    doc["Status"] = "DISABLED"
+    path.write_text(json.dumps(doc), encoding="utf-8")
+    rc, rep = run_json(mod, [str(folder), "--json", "--as-of", "2026-10-01"])
+    gd = [f for f in rep["findings"] if f["check"] == "GD-DISABLED"]
+    assert rc == 1
+    assert [(f["region"], f["resource"]) for f in gd] == [("ap-southeast-2", f"detector {DETECTOR}")]
+    assert "'DISABLED'" in gd[0]["evidence"]
+    assert gd[0]["fix"] == f"aws guardduty update-detector --detector-id {DETECTOR} --enable --region ap-southeast-2"
+
+
+def test_guardduty_enabled_detector_and_missing_get_detector_file_are_clean(tmp_path):
+    rc, rep = run_json(mod, [str(SECURE), "--json", "--as-of", "2026-10-01"])
+    assert "GD-DISABLED" not in checks(rep)
+    folder = tmp_path / "acct"
+    shutil.copytree(SECURE, folder)
+    (folder / "regions" / "us-east-1" / f"guardduty-detector-{DETECTOR}.json").unlink()
+    rc, rep = run_json(mod, [str(folder), "--json", "--as-of", "2026-10-01"])
+    assert "GD-DISABLED" not in checks(rep)
+
+
+def test_guardduty_get_detector_file_of_the_wrong_shape_or_a_strange_id_exits_2(tmp_path):
+    folder = tmp_path / "acct"
+    shutil.copytree(SECURE, folder)
+    (folder / "regions" / "us-east-1" / f"guardduty-detector-{DETECTOR}.json").write_text('{"DetectorIds": []}', encoding="utf-8")
+    rc, _, err = run_main(mod, [str(folder)])
+    assert rc == 2 and "no Status key" in err
+    shutil.rmtree(folder)
+    shutil.copytree(SECURE, folder)
+    (folder / "regions" / "us-east-1" / "guardduty-detectors.json").write_text('{"DetectorIds": ["../../etc"]}', encoding="utf-8")
+    rc, _, err = run_main(mod, [str(folder)])
+    assert rc == 2 and "not a GuardDuty detector id" in err

@@ -4,6 +4,25 @@ All notable changes to this project are documented here. The format follows Keep
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-26
+
+### Added
+
+- `aws-account-audit`: `GD-DISABLED` also fires for a GuardDuty detector that exists but whose `get-detector` status is not `ENABLED`, from optional `guardduty-detector-<id>.json` files saved next to `guardduty-detectors.json`; the fix is `aws guardduty update-detector --detector-id <id> --enable`. The collection loop in SKILL.md saves the files, a detector id that is not a GuardDuty id exits 2, and the secure fixture carries enabled detectors (closes #5).
+- A `README.md` in every skill folder with one real sample run on a committed fixture; `tests/test_readme_samples.py` re-runs each sampled command and fails when the sample is no longer the start of the real output.
+- Seeded fuzz tests for every script that reads an export or a spec (`tests/test_fuzz_parsers.py`): empty files, byte order marks, bytes that are not UTF-8, deep nesting, truncated and byte-flipped fixtures, and fixtures with one value swapped for another type. Each case first checks the unmodified fixture is accepted, so the fuzzing reaches the parser and not only argparse. Set `AWS_SECURITY_FUZZ_SEED` and `AWS_SECURITY_FUZZ_CASES` to explore further.
+- An end-to-end test (`tests/test_integration_chain.py`) that runs Security Hub triage, the preventive control mapper and the SCP linter on one export, checking that triage and the mapper agree on the open findings, that every triaged control comes back as preventable, detective-only or unmapped, and that the merged SCP draft lints clean.
+
+### Fixed
+
+- Every script: a file that is not UTF-8, JSON nested tens of thousands of levels deep, or a value of the wrong type anywhere in an export or spec (`"suppress_accounts": 1` in a triage config, a string where `SecurityGroups` should be a list, `true` in a `UserPolicyList`) ended in a traceback. Each now exits 2 with a message, as documented; before the fix 21 of the 23 fuzz tests failed. A credential report row with missing trailing fields reads as empty fields instead of crashing the root checks.
+- `landing-zone-blast-radius`: each account's callers were found by scanning every workload account, so 12,000 workloads took 4.8 s; they are indexed once now (0.2 s), with a scaling test.
+
+### Changed
+
+- Skill descriptions for `aws-agent-session-audit`, `iam-least-privilege-review`, `aws-spend-guardrails`, `sandbox-account-guardrail-pack`, `preventive-control-mapper` and `aws-incident-response-runbook` name the neighbours they are not for and the requests they were missing (cost alerts, admin policies on a role, ransomware that deletes objects); quoted trigger phrases are specific enough not to fire on any prompt that mentions an agent and an account.
+- Version 0.6.0 in `pyproject.toml`, `plugin.json`, `marketplace.json`, the dispatcher and the README container examples.
+
 ## [0.5.0] - 2026-10-20
 
 ### Added
