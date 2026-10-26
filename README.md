@@ -51,11 +51,11 @@ Requirements: Python 3.11 or newer as `python3`. AWS CLI v2 and read-only creden
 The plugin installs as shown in the Quickstart. The skill scripts are also published as one container image on GitHub Packages (linux/amd64 and linux/arm64) for running them without a checkout, for example in CI. The image's entrypoint is `aws-security <subcommand> [args]`; mount the files to read at `/work`, which is the working directory:
 
 ```bash
-docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.5.0 audit /work/exports
-docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.5.0 iam-review /work/policy.json
-docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.5.0 scp-build /work/scp-spec.yaml --out /work/scps
-docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.5.0 ir-runbook triage --guardduty /work/findings.json --out /work/ir
-docker run --rm ghcr.io/basitalisandhu/aws-security-skills:0.5.0 --help
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.6.0 audit /work/exports
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.6.0 iam-review /work/policy.json
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.6.0 scp-build /work/scp-spec.yaml --out /work/scps
+docker run --rm -v "$PWD:/work" ghcr.io/basitalisandhu/aws-security-skills:0.6.0 ir-runbook triage --guardduty /work/findings.json --out /work/ir
+docker run --rm ghcr.io/basitalisandhu/aws-security-skills:0.6.0 --help
 ```
 
 This pack is also part of [claude-skills](https://github.com/basitalisandhu/claude-skills), which holds every skill I maintain as one marketplace: `/plugin marketplace add basitalisandhu/claude-skills`.
@@ -80,10 +80,10 @@ Every subcommand passes its arguments to the script unchanged, so `aws-security 
 Each image is signed with cosign (keyless) and has a build provenance attestation and an SPDX SBOM (attached to the GitHub Release). To verify:
 
 ```bash
-cosign verify ghcr.io/basitalisandhu/aws-security-skills:0.5.0 \
+cosign verify ghcr.io/basitalisandhu/aws-security-skills:0.6.0 \
   --certificate-identity-regexp '^https://github.com/basitalisandhu/aws-security-skills/' \
   --certificate-oidc-issuer https://token.actions.githubusercontent.com
-gh attestation verify oci://ghcr.io/basitalisandhu/aws-security-skills:0.5.0 --owner basitalisandhu
+gh attestation verify oci://ghcr.io/basitalisandhu/aws-security-skills:0.6.0 --owner basitalisandhu
 ```
 
 ## When to use this
@@ -161,7 +161,7 @@ python3 scripts/validate_plugins.py        # structure, frontmatter, scripts, RE
 claude plugin validate --strict . && claude plugin validate --strict ./plugins/aws-security
 ```
 
-Every script exits 0 (clean), 1 (findings to review) or 2 (bad input or usage); the [plugin README](plugins/aws-security/README.md#exit-codes) has the table and real output samples from the fixtures.
+Every script exits 0 (clean), 1 (findings to review) or 2 (bad input or usage); the [plugin README](plugins/aws-security/README.md#exit-codes) has the table and real output samples from the fixtures. Each skill folder also has a `README.md` with one real sample run; `tests/test_readme_samples.py` re-runs every sampled command.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the ground rules and [docs/good-first-issues.md](docs/good-first-issues.md) for a place to start.
 
